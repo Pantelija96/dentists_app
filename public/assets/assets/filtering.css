@@ -1,0 +1,109 @@
+.filter-form-container .form-inline {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+
+/* md breakpoint (~768px) */
+@media (max-width: 768px) {
+    .filter-form-container .form-inline {
+        margin-bottom: 15px;
+    }
+}
+
+.filter-form-container label {
+    font-size: 14px;
+    line-height: 25px;
+    font-weight: 400;
+    color: var(--color-gray-x);
+    text-transform: capitalize;
+}
+
+/* ssm breakpoint (~480px) */
+@media (max-width: 480px) {
+    .filter-form-container .form-group {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .filter-form-container .form-group select {
+        width: 100%;
+    }
+
+    .filter-form-container .form-group:after {
+        top: auto;
+        bottom: 7%;
+    }
+}
+
+.filter-form-container .footable-filtering-search {
+    margin: 25px 0;
+}
+
+@media (max-width: 768px) {
+    .filter-form-container .footable-filtering-search {
+        margin: 15px 0;
+    }
+}
+
+.filter-form-container .footable-filtering-search .input-group {
+    font-weight: 900;
+    position: relative;
+}
+
+.filter-form-container .footable-filtering-search .input-group:after {
+    font-size: 18px;
+    font-family: "Line Awesome Free";
+    position: absolute;
+    left: 20px;
+    top: 8px;
+    transform: scaleX(-1);
+    content: '\f002';
+    color: var(--color-gray);
+    z-index: 3;
+}
+
+.filter-form-container .input-group-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+}
+
+.filter-form-container .input-group-btn button:first-child {
+    background-color: transparent !important;
+    border: none;
+    color: var(--color-gray);
+}
+
+.filter-form-container .input-group-btn .fooicon-search {
+    visibility: hidden;
+}
+
+.filter-form-container .footable-filtering-search .form-control {
+    width: 280px;
+    padding-left: 46px;
+}
+
+.filter-form-container .form-control {
+    border-radius: 6px;
+    height: 40px;
+    border: 1px solid var(--border-color);
+    color: var(--color-dark);
+    text-transform: capitalize;
+    width: 200px;
+}
+
+/* xs breakpoint (~576px) */
+@media (max-width: 576px) {
+    .filter-form-container .form-control {
+        width: 150px;
+        max-width: 100%;
+    }
+}
+
+.filter-form-container input {
+    border: 1px solid var(--border-color);
+}
