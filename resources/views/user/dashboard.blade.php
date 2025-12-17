@@ -101,9 +101,9 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="d-flex justify-content-center align-items-center">
+                                                <div class="d-flex ">
                                                     @if($work_order->draft)
-                                                        <a href="{{ route('work.publish', $work_order->id) }}" class="btn btn-primary btn-sm">
+                                                        <a href="{{ route('work.publish', $work_order->id) }}" class="btn btn-primary btn-sm" style = "color: white;">
                                                             Publish
                                                         </a>
                                                     @else
@@ -114,19 +114,19 @@
                                             <td>
                                                 <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                     <li>
-                                                        <a href="{{ route('work.inspect', $work_order->id) }}" class="view">
+                                                        <a href="{{ route('work.inspect', $work_order->id) }}" class="view" title = "Inspect work">
                                                             <i class="uil uil-eye"></i>
                                                         </a>
                                                     </li>
                                                     @if(!$work_order->locked)
                                                         <li>
-                                                            <a href="{{ route('work.edit', $work_order->id) }}" class="view">
+                                                            <a href="{{ route('work.edit', $work_order->id) }}" class="view" title = "Edit work">
                                                                 <i class="uil uil-pen"></i>
                                                             </a>
                                                         </li>
                                                         @if(!$work_order->deleted)
                                                             <li>
-                                                                <a href="{{ route('work.remove', $work_order->id) }}" class="view">
+                                                                <a href="{{ route('work.remove', $work_order->id) }}" class="view" title = "Delete work">
                                                                     <i class="uil uil-trash-alt"></i>
                                                                 </a>
                                                             </li>

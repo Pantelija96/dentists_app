@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ asset('assets/assets/vendor_assets/css/bootstrap/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/assets/vendor_assets/css/fontawesome.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/assets/vendor_assets/css/line-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/assets/vendor_assets/css/select2.min.css') }}">
     @yield('additionalPluginCSS')
     <link rel="stylesheet" href="{{ asset('assets/style.css') }}">
 @yield('additionalPageCSS')
@@ -79,6 +80,16 @@
                         </div>
                     </li>
                 @endif
+                @if(auth()->user()->role == 'user')
+                    <li class="">
+                        <a href="{{route('user.dashboard')}}" class="il-light-gray" style="margin-right: 5px;" id="nav-links">My Dashboard</a>
+                    </li>
+                @endif
+                @if(auth()->user()->role == 'admin')
+                    <li class="">
+                        <a href="{{route('admin.dashboard')}}" class="il-light-gray" style="margin-right: 5px;" id="nav-links">My Dashboard</a>
+                    </li>
+                @endif
                 <li class="nav-notification">
                     <div class="dropdown-custom">
                         <a href="javascript:;" class="nav-item-toggle @if(auth()->user()->number_of_notifications > 0) icon-active @endif">
@@ -86,7 +97,8 @@
                         </a>
                         <div class="dropdown-parent-wrapper">
                             <div class="dropdown-wrapper">
-                                <h2 class="dropdown-wrapper__title">Notifications <span class="badge-circle badge-warning ms-1">{{ auth()->user()->number_of_notifications }}</span></h2>
+                                <h2 class="dropdown-wrapper__title">Notifications <span class="badge-circle badge-warning ms-1">{{ auth()->user()->number_of_notifications }}</span>
+                                <a href="" class="view" title = "Mark all as read"><i class="uil uil-check"></i></a></h2>
                                 @if(isset($notifications))
                                     <ul>
                                         @foreach($notifications as $notification)

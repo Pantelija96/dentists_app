@@ -99,18 +99,18 @@
                                             <td>
                                                 <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                     <li>
-                                                        <a href="{{ route('work.inspect', $work_order->id) }}" class="view">
+                                                        <a href="{{ route('work.inspect', $work_order->id) }}" class="view" title = "Inspect work">
                                                             <i class="uil uil-eye"></i>
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ route('work.edit', $work_order->id) }}" class="view">
+                                                        <a href="{{ route('work.edit', $work_order->id) }}" class="view" title = "Edit work">
                                                             <i class="uil uil-pen"></i>
                                                         </a>
                                                     </li>
 
                                                     <li>
-                                                        <a href="{{ route('work.remove', $work_order->id) }}" class="view">
+                                                        <a href="{{ route('work.remove', $work_order->id) }}" class="view" title = "Delete work">
                                                             <i class="uil uil-trash-alt"></i>
                                                         </a>
                                                     </li>
@@ -200,17 +200,17 @@
                                             <td>
                                                 <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                     <li>
-                                                        <a href="{{ route('admin.users.approve', $pending->id) }}" class="view">
+                                                        <a href="{{ route('admin.users.approve', $pending->id) }}" class="view" title = "Approve">
                                                             <i class="uil uil-check"></i>
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ route('admin.users.deny', $pending->id) }}" class="edit">
+                                                        <a href="{{ route('admin.users.deny', $pending->id) }}" class="edit" title = "Deny">
                                                             <i class="uil uil-times-circle"></i>
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ route('admin.users.delete', $pending->id) }}" class="remove">
+                                                        <a href="{{ route('admin.users.delete', $pending->id) }}" class="remove" title = "Delete">
                                                             <i class="uil uil-trash-alt"></i>
                                                         </a>
                                                     </li>
