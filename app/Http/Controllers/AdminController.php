@@ -25,6 +25,7 @@ class AdminController extends Controller
             ->whereHas('user', function ($q) {
                 $q->where('region_id', auth()->user()->region_id);
             })
+            ->orderBy('created_at', 'desc')
             ->get();
 
         if (auth()->user()->number_of_notifications > 0) {

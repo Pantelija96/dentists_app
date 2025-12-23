@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\AppNotificationEvent;
+use App\Events\SecondStepSignUpFinished;
 use App\Http\Requests\AdditionalInformationRequest;
 use App\Http\Requests\FirstStepSignInRequest;
 use App\Models\Region;
@@ -96,11 +97,7 @@ class AuthController extends Controller
                 'status' => 'pending',
             ]);
 
-            event(new AppNotificationEvent(
-                user: $user,
-                userMessage: null,
-                adminMessage: 'New user registered and awaits approval.'
-            ));
+            event(new SecondStepSignUpFinished(user: $user));
         });
 
         return redirect('/')->with('success', 'Account created. Please wait for admin approval.');
