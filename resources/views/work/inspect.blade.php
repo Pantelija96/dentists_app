@@ -25,8 +25,8 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="action-btn">
-                            <a href="{{ route('work.download', $work_order->id) }}" class="btn btn-primary">
+                        <div class="action-btn" style="color: white;">
+                            <a href="{{ route('work.download', $work_order->id) }}" class="btn btn-primary" style = "color: white;">
                                 Download files
                             </a>
                         </div>

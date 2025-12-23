@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ asset('assets/assets/vendor_assets/css/bootstrap/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/assets/vendor_assets/css/fontawesome.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/assets/vendor_assets/css/line-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/assets/vendor_assets/css/select2.min.css') }}">
     @yield('additionalPluginCSS')
     <link rel="stylesheet" href="{{ asset('assets/style.css') }}">
 @yield('additionalPageCSS')
@@ -77,6 +78,16 @@
                                 <a class="dropdown-item @yield('materialsActive')" href="{{ route('materials.index') }}">Work order materials</a>
                             </div>
                         </div>
+                    </li>
+                @endif
+                @if(auth()->user()->role == 'user')
+                    <li class="">
+                        <a href="{{route('user.dashboard')}}" class="il-light-gray" style="margin-right: 5px;" id="nav-links">My Dashboard</a>
+                    </li>
+                @endif
+                @if(auth()->user()->role == 'admin')
+                    <li class="">
+                        <a href="{{route('admin.dashboard')}}" class="il-light-gray" style="margin-right: 5px;" id="nav-links">My Dashboard</a>
                     </li>
                 @endif
                 <li class="nav-notification">
