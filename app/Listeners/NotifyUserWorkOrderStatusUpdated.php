@@ -2,15 +2,14 @@
 
 namespace App\Listeners;
 
-use App\Events\WorkOrderStatusChange;
+use App\Events\WorkOrderStatusUpdatedEvent;
 use App\Mail\AdminChangedWorkOrderStatus;
 use App\Models\Notification;
-use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
-class NotifyUserAboutWorkOrderStatusChange
+class NotifyUserWorkOrderStatusUpdated
 {
     /**
      * Create the event listener.
@@ -23,9 +22,9 @@ class NotifyUserAboutWorkOrderStatusChange
     /**
      * Handle the event.
      */
-    public function handle(WorkOrderStatusChange $event): void
+    public function handle(WorkOrderStatusUpdatedEvent $event): void
     {
-        $workOrder = $event->work_order;
+        $workOrder = $event->workOrder;
 
         Notification::create([
             'region_id' => null,
@@ -36,7 +35,7 @@ class NotifyUserAboutWorkOrderStatusChange
         ]);
 
         \Log::info('Listener NotifyUserAboutWorkOrderStatusChange fired', [
-            'work_order_id' => $event->work_order->id,
+            'work_order_id' => $event->workOrder->id,
         ]);
 
         Mail::to($workOrder->user->email)->send(new AdminChangedWorkOrderStatus($workOrder));

@@ -17,6 +17,7 @@ class UserController extends Controller
     public function dashboard(){
         $this->data['work_orders'] = WorkOrder::with(['user', 'status'])
             ->where('user_id', auth()->id())
+            ->orderBy('created_at', 'desc')
             ->get();
         $this->data['statuses'] = WorkOrderStatus::all();
         return view('user.dashboard', $this->data);

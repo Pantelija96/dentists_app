@@ -230,4 +230,23 @@
     }
 
 
+    document.querySelectorAll('.notification-link').forEach(link => {
+        link.addEventListener('click', function (e) {
+            const notificationId = this.dataset.id;
+            const url = this.getAttribute('href');
+
+            this.closest('li').classList.add('read');
+
+            fetch(`/notifications/${notificationId}/read`, {
+                method: 'GET',
+            }).then((data) => {
+                if (url && url !== 'javascript:;') {
+                    window.location.href = url;
+                }
+            });
+            e.preventDefault();
+        });
+    });
+
+
 })(jQuery);

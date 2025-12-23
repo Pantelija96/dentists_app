@@ -80,29 +80,42 @@
                     </li>
                 @endif
                 <li class="nav-notification">
+                    @php
+                        $notifications = session('notifications', collect());
+                        $notificationsCount = session('notifications_count', 0);
+                    @endphp
                     <div class="dropdown-custom">
-                        <a href="javascript:;" class="nav-item-toggle @if(auth()->user()->number_of_notifications > 0) icon-active @endif">
+                        <a href="javascript:;" class="nav-item-toggle {{ $notificationsCount > 0 ? 'icon-active' : '' }}">
                             <img class="svg" src="{{ asset('assets/img/svg/alarm.svg')}}" alt="img">
                         </a>
                         <div class="dropdown-parent-wrapper">
                             <div class="dropdown-wrapper">
-                                <h2 class="dropdown-wrapper__title">Notifications <span class="badge-circle badge-warning ms-1">{{ auth()->user()->number_of_notifications }}</span></h2>
-                                @if(isset($notifications))
-                                    <ul>
-                                        @foreach($notifications as $notification)
-                                            <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
-                                                <div class="nav-notification__details">
-                                                    <p>
-                                                        <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">{{ $notification->message }}</a>
-                                                    </p>
-                                                    <p>
-                                                        <span class="time-posted">{{ $notification->created_at->format('F d, Y') }}</span>
-                                                    </p>
-                                                </div>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                @endif
+                                <h2 class="dropdown-wrapper__title">
+                                    Notifications @if($notificationsCount > 0) <span class="badge-circle badge-warning ms-1"> {{ $notificationsCount }} </span> @endif
+                                </h2>
+
+                                <ul>
+                                    @forelse($notifications as $notification)
+                                        <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
+                                            <div class="nav-notification__details">
+                                                <p>
+                                                    <a href="{{ $notification->url ?? 'javascript:;' }}" class="subject stretched-link text-truncate notification-link" style="max-width: 180px;" data-id="{{ $notification->id }}">
+                                                        {{ $notification->message }}
+                                                    </a>
+                                                </p>
+                                                <p>
+                                                    <span class="time-posted">
+                                                        {{ $notification->created_at->format('F d, Y') }}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </li>
+                                    @empty
+                                        <p class="text-muted text-center mt-3">
+                                            No new notifications
+                                        </p>
+                                    @endforelse
+                                </ul>
                             </div>
                         </div>
                     </div>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RegionsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkController;
@@ -52,6 +53,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
         Route::get('/inspect/{id}', [UserController::class, 'inspect'])->name('user.inspect');
     });
+
+
+    Route::prefix('notifications')->group(function () {
+        Route::get('/{notification}/read',[NotificationController::class, 'markAsRead'])->name('notifications.read');
+        Route::get('/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllRead');
+    });
+
+
 });
 
 
@@ -87,75 +96,75 @@ Route::middleware(['admin'])->group(function () {
 
 
 
-
-
-
-Route::middleware(['super-admin'])->group(function () {});
-
-
-Route::middleware(['auth'])->group(function () {
-
-    Route::prefix('admin')->group(function () {
-
-        Route::get('/approveuser/{id}', [AdminController::class, 'approveuser'])->name('admin.approveuser');
-        Route::get('/denied/{id}', [AdminController::class, 'denied'])->name('admin.denied');
-        Route::get('/inspect/{id}', [AdminController::class, 'inspect'])->name('admin.inspect');
-
-
-        Route::prefix('regions')->group(function () {
-            Route::get('/{id?}', [RegionsController::class, 'regionsIndex'])->name('regions.index');
-            Route::post('/create', [RegionsController::class, 'regionsCreate'])->name('regions.create');
-            Route::post('/edit/{region}', [RegionsController::class, 'regionsEdit'])->name('regions.edit');
-            Route::post('/delete/{region}', [RegionsController::class, 'regionsDelete'])->name('regions.delete');
-        });
-
-        Route::prefix('workstatus')->group(function () {
-            Route::get('/{id?}', [WorkOrderStatusController::class, 'index'])->name('workstatus.index');
-            Route::post('/create', [WorkOrderStatusController::class, 'create'])->name('workstatus.create');
-            Route::post('/edit/{status}', [WorkOrderStatusController::class, 'edit'])->name('workstatus.edit');
-            Route::post('/delete/{status}', [WorkOrderStatusController::class, 'delete'])->name('workstatus.delete');
-        });
-
-        Route::prefix('delivery')->group(function () {
-            Route::get('/{id?}', [DeliveryController::class, 'deliveryIndex'])->name('delivery.index');
-            Route::post('/create', [DeliveryController::class, 'deliveryCreate'])->name('delivery.create');
-            Route::post('/edit/{delivery}', [DeliveryController::class, 'deliveryEdit'])->name('delivery.edit');
-            Route::post('/delete/{delivery}', [DeliveryController::class, 'deliveryDelete'])->name('delivery.delete');
-        });
-
-        Route::prefix('worktype')->group(function () {
-            Route::get('/{id?}', [WorkTypeController::class, 'index'])->name('worktype.index');
-            Route::post('/create', [WorkTypeController::class, 'create'])->name('worktype.create');
-            Route::post('/edit/{type}', [WorkTypeController::class, 'edit'])->name('worktype.edit');
-            Route::post('/delete/{type}', [WorkTypeController::class, 'delete'])->name('worktype.delete');
-        });
-
-        Route::prefix('materials')->group(function () {
-            Route::get('/{id?}', [WorkTypeMaterialController::class, 'index'])->name('materials.index');
-            Route::post('/create', [WorkTypeMaterialController::class, 'create'])->name('materials.create');
-            Route::post('/edit/{material}', [WorkTypeMaterialController::class, 'edit'])->name('materials.edit');
-            Route::post('/delete/{material}', [WorkTypeMaterialController::class, 'delete'])->name('materials.delete');
-        });
-    });
-
-
-
-
-
-
-});
-
-
-
-Route::middleware(['auth'])->group(function () {
-
-    Route::prefix('user')->middleware(['auth'])->group(function () {
-        Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
-        Route::get('/inspect/{id}', [UserController::class, 'inspect'])->name('user.inspect');
-
-        Route::get('/work/new', [WorkController::class, 'new'])->name('work.new');
-        Route::post('/work/add', [WorkController::class, 'add'])->name('work.add');
-        Route::post('/work-orders/{id}/update', [WorkController::class, 'update'])->name('work.update');
-        Route::get('/materials-by-work-type/{id}', [WorkController::class, 'getMaterials'])->name('work.materials');
-    });
-});
+//
+//
+//
+//Route::middleware(['super-admin'])->group(function () {});
+//
+//
+//Route::middleware(['auth'])->group(function () {
+//
+//    Route::prefix('admin')->group(function () {
+//
+//        Route::get('/approveuser/{id}', [AdminController::class, 'approveuser'])->name('admin.approveuser');
+//        Route::get('/denied/{id}', [AdminController::class, 'denied'])->name('admin.denied');
+//        Route::get('/inspect/{id}', [AdminController::class, 'inspect'])->name('admin.inspect');
+//
+//
+//        Route::prefix('regions')->group(function () {
+//            Route::get('/{id?}', [RegionsController::class, 'regionsIndex'])->name('regions.index');
+//            Route::post('/create', [RegionsController::class, 'regionsCreate'])->name('regions.create');
+//            Route::post('/edit/{region}', [RegionsController::class, 'regionsEdit'])->name('regions.edit');
+//            Route::post('/delete/{region}', [RegionsController::class, 'regionsDelete'])->name('regions.delete');
+//        });
+//
+//        Route::prefix('workstatus')->group(function () {
+//            Route::get('/{id?}', [WorkOrderStatusController::class, 'index'])->name('workstatus.index');
+//            Route::post('/create', [WorkOrderStatusController::class, 'create'])->name('workstatus.create');
+//            Route::post('/edit/{status}', [WorkOrderStatusController::class, 'edit'])->name('workstatus.edit');
+//            Route::post('/delete/{status}', [WorkOrderStatusController::class, 'delete'])->name('workstatus.delete');
+//        });
+//
+//        Route::prefix('delivery')->group(function () {
+//            Route::get('/{id?}', [DeliveryController::class, 'deliveryIndex'])->name('delivery.index');
+//            Route::post('/create', [DeliveryController::class, 'deliveryCreate'])->name('delivery.create');
+//            Route::post('/edit/{delivery}', [DeliveryController::class, 'deliveryEdit'])->name('delivery.edit');
+//            Route::post('/delete/{delivery}', [DeliveryController::class, 'deliveryDelete'])->name('delivery.delete');
+//        });
+//
+//        Route::prefix('worktype')->group(function () {
+//            Route::get('/{id?}', [WorkTypeController::class, 'index'])->name('worktype.index');
+//            Route::post('/create', [WorkTypeController::class, 'create'])->name('worktype.create');
+//            Route::post('/edit/{type}', [WorkTypeController::class, 'edit'])->name('worktype.edit');
+//            Route::post('/delete/{type}', [WorkTypeController::class, 'delete'])->name('worktype.delete');
+//        });
+//
+//        Route::prefix('materials')->group(function () {
+//            Route::get('/{id?}', [WorkTypeMaterialController::class, 'index'])->name('materials.index');
+//            Route::post('/create', [WorkTypeMaterialController::class, 'create'])->name('materials.create');
+//            Route::post('/edit/{material}', [WorkTypeMaterialController::class, 'edit'])->name('materials.edit');
+//            Route::post('/delete/{material}', [WorkTypeMaterialController::class, 'delete'])->name('materials.delete');
+//        });
+//    });
+//
+//
+//
+//
+//
+//
+//});
+//
+//
+//
+//Route::middleware(['auth'])->group(function () {
+//
+//    Route::prefix('user')->middleware(['auth'])->group(function () {
+//        Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
+//        Route::get('/inspect/{id}', [UserController::class, 'inspect'])->name('user.inspect');
+//
+//        Route::get('/work/new', [WorkController::class, 'new'])->name('work.new');
+//        Route::post('/work/add', [WorkController::class, 'add'])->name('work.add');
+//        Route::post('/work-orders/{id}/update', [WorkController::class, 'update'])->name('work.update');
+//        Route::get('/materials-by-work-type/{id}', [WorkController::class, 'getMaterials'])->name('work.materials');
+//    });
+//});
