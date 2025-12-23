@@ -9,8 +9,8 @@ class Notification extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['region_id','user_id','message','users_notification'];
-    protected $casts = ['users_notification'=>'boolean'];
+    protected $fillable = ['region_id','user_id','message','users_notification', 'seen', 'url'];
+    protected $casts = ['users_notification'=>'boolean', 'seen' => 'boolean'];
 
     public function region()
     {

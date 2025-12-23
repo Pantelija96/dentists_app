@@ -149,6 +149,13 @@ NB: this file contains the list of components/scss partial along with the style.
 
 /* Hero section */
 
+.nav-notification__single--unread {
+    transition: opacity 0.3s ease;
+}
+.nav-notification__single--unread.read {
+    opacity: 0.4;
+}
+
 .dental-hero {
     position: relative;
     padding: 70px 40px 0px 40px;

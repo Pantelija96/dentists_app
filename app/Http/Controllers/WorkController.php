@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewCommentEvent;
+use App\Events\NewWorkOrderEvent;
 use App\Events\WorkOrderCreated;
 use App\Events\WorkOrderStatusChange;
+use App\Events\WorkOrderStatusUpdatedEvent;
 use App\Models\Notification;
 use App\Models\Parameter;
 use App\Models\User;
@@ -138,13 +141,15 @@ class WorkController extends Controller
 
             DB::commit();
 
+
+
             if(auth()->user()->role == 'user')
             {
                 if($draft){
                     return redirect('/user/dashboard')->with('success', 'Work order draft saved successfully.');
                 }
                 else{
-                    event(new WorkOrderCreated($workOrder));
+                    event(new NewWorkOrderEvent($workOrder));
                     return redirect('/user/dashboard')->with('success', 'Work order saved successfully.');
                 }
             }
@@ -206,6 +211,7 @@ class WorkController extends Controller
         ]);
 
         if($work_order_comment){
+            event(new NewCommentEvent($work_order_comment));
             return redirect()->back()->with('success', "Successfully created new comment!");
         } else {
             return redirect()->back()->with('error', 'Some unexpected error occurred, error id: error-5!');
@@ -221,7 +227,7 @@ class WorkController extends Controller
         ]);
 
         if($updated){
-            event(new WorkOrderStatusChange($work_order));
+            event(new WorkOrderStatusUpdatedEvent($work_order));
             return redirect()->back()->with('success', "Successfully updated status!");
         } else {
             return redirect()->back()->with('error', 'Some unexpected error occurred, error id: error-4!');
