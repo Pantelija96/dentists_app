@@ -90,7 +90,7 @@
                                             </td>
                                             <td>
                                                 <div class="userDatatable-content">
-                                                    {{ $work_order->created_at->format('F d, Y') }}
+                                                    {{ $work_order->created_at->format('F d, Y @ H:i') }}
                                                 </div>
                                             </td>
                                             <td>

@@ -26,12 +26,12 @@ class MaterialsTableSeeder extends Seeder
             'BioHPP with Composite Crowns',
             'BioHPP with Zr Crowns',
             'CoCr Base with Composite/Zr Teeth',
-            'Titanium Base with Composite/Zr Teeth',
+//            'Titanium Base with Composite/Zr Teeth',
             'Temporary PMMA',
             'Onyx 3D Print',
             '3D print (Night guard flex)',
             'Zr',
-            'Titanium',
+//            'Titanium',
             'CoCr'
         ];
 

@@ -74,7 +74,7 @@ class MaterialParameterRulesTableSeeder extends Seeder
                 'BioHPP with Composite Crowns' => ['Phase of Work'],
                 'BioHPP with Zr Crowns' => ['Phase of Work'],
                 'CoCr Base with Composite/Zr Teeth' => ['Phase of Work', 'Cross/Timble'],
-                'Titanium Base with Composite/Zr Teeth' => ['Phase of Work', 'Cross/Timble'],
+//                'Titanium Base with Composite/Zr Teeth' => ['Phase of Work', 'Cross/Timble'],
                 'Temporary PMMA' => ['Phase of Work'],
                 'Onyx 3D Print' => ['Phase of Work'],
             ],
@@ -82,7 +82,7 @@ class MaterialParameterRulesTableSeeder extends Seeder
                 '3D print (Night guard flex)' => ['Thickness in mm'],
             ],
             'Skelet' => [
-                'Titanium' => ['Class'],
+//                'Titanium' => ['Class'],
                 'CoCr' => ['Class'],
             ]
         ];

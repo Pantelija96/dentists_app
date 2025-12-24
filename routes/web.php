@@ -54,13 +54,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/inspect/{id}', [UserController::class, 'inspect'])->name('user.inspect');
     });
 
-
     Route::prefix('notifications')->group(function () {
         Route::get('/{notification}/read',[NotificationController::class, 'markAsRead'])->name('notifications.read');
         Route::get('/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllRead');
     });
-
-
 });
 
 
@@ -71,6 +68,7 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/approve/{id}', [UserController::class, 'approve'])->name('admin.users.approve');
         Route::get('/deny/{id}', [UserController::class, 'deny'])->name('admin.users.deny');
         Route::get('/{user}', [UserController::class, 'destroy'])->name('admin.users.delete');
+        Route::get('/users-work-orders/{user}', [AdminController::class, 'showUsersWorkOrders'])->name('admin.users.work-orders');
     });
 
     Route::prefix('work-orders')->group(function () {

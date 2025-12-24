@@ -27,15 +27,24 @@ class AdminController extends Controller
             })
             ->orderBy('created_at', 'desc')
             ->get();
-
-        if (auth()->user()->number_of_notifications > 0) {
-            $this->data['notifications'] = Notification::where('region_id', auth()->user()->region_id)
-                ->latest()
-                ->limit(auth()->user()->number_of_notifications)
-                ->get();
-        }
         $this->data['statuses'] = WorkOrderStatus::all();
 
         return view('admin.dashboard', $this->data);
+    }
+
+    public function showUsersWorkOrders($id){
+        $this->data['work_orders'] = WorkOrder::with(['user', 'status'])
+            ->where('deleted', false)
+            ->where('draft', false)
+            ->where('user_id', $id)
+            ->whereHas('user', function ($q) {
+                $q->where('region_id', auth()->user()->region_id);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $this->data['statuses'] = WorkOrderStatus::all();
+        $this->data['target_user'] = User::where('id', $id)->first();
+
+        return view('admin.user-work-orders', $this->data);
     }
 }

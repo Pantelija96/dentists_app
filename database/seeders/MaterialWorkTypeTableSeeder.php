@@ -45,13 +45,15 @@ class MaterialWorkTypeTableSeeder extends Seeder
                     $allowed = ['LiSi','3D Print','Zr'];
                     break;
                 case 'Hybrid Work':
-                    $allowed = ['Full Zr','BioHPP with Composite Crowns','BioHPP with Zr Crowns','CoCr Base with Composite/Zr Teeth','Titanium Base with Composite/Zr Teeth','Temporary PMMA','Onyx 3D Print'];
+//                    $allowed = ['Full Zr','BioHPP with Composite Crowns','BioHPP with Zr Crowns','CoCr Base with Composite/Zr Teeth','Titanium Base with Composite/Zr Teeth','Temporary PMMA','Onyx 3D Print'];
+                    $allowed = ['Full Zr','BioHPP with Composite Crowns','BioHPP with Zr Crowns','CoCr Base with Composite/Zr Teeth', 'Temporary PMMA','Onyx 3D Print'];
                     break;
                 case 'Bite Splint 3D Print':
                     $allowed = ['3D print (Night guard flex)'];
                     break;
                 case 'Skelet':
-                    $allowed = ['Titanium','CoCr'];
+//                    $allowed = ['Titanium','CoCr'];
+                    $allowed = ['CoCr'];
                     break;
                 default:
                     $allowed = [];
