@@ -10,6 +10,7 @@ use App\Http\Controllers\WorkController;
 use App\Http\Controllers\WorkOrderStatusController;
 use App\Http\Controllers\WorkTypeController;
 use App\Http\Controllers\WorkTypeMaterialController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {return view('index');});
@@ -83,7 +84,21 @@ Route::middleware(['admin'])->group(function () {
 
 
 
+Route::get('/_optimize', function () {
 
+    Artisan::call('optimize');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+    Artisan::call('route:clear');
+    Artisan::call('route:cache');
+    Artisan::call('view:clear');
+    Artisan::call('view:cache');
+
+    return response()->json([
+        'status' => 'ok',
+        'message' => 'Application optimized successfully'
+    ]);
+});
 
 
 

@@ -34,7 +34,7 @@ class SecondStepSignUpFinished
         $admins = User::where([
             'region_id' => $event->user->region_id,
             'role' => 'admin'
-        ]);
+        ])->get();
 
         foreach ($admins as $admin){
             Mail::to($admin->email)->send(new RegistrationCompletedMail($event->user));
