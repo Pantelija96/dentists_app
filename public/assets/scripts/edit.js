@@ -13,8 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
      * DOM CACHE
      * ============================================================ */
     const DOM = {
-        typeSelect: $('#type_of_work'),
-        materialSelect: $('#material_of_work'),
+        typeRadios: document.querySelectorAll('input[name="work_type_radio"]'),
+        materialRadiosContainer: document.getElementById("material_radios_container"),
+        materialSelectHidden: $('#material_of_work'),
+        typeSelectHidden: $('#type_of_work'),
         addParamsBtn: $('#add_parameters_button'),
         parametersModal: $('#parameters-modal'),
         parametersContainer: $('#parameters-container'),
@@ -25,7 +27,10 @@ document.addEventListener("DOMContentLoaded", () => {
         clearBtn: document.getElementById("clearSelection"),
         groupsContainer: document.getElementById("toothGroupsContainer"),
         form: document.querySelector(".work-page form"),
-        svg: document.querySelector(".tooth-chart svg")
+        svg: document.querySelector(".tooth-chart svg"),
+        uploadsContainer: document.getElementById('uploads-container'),
+        addFileBtn: document.getElementById('add-file'),
+        materialSelect: $('#material_of_work'),
     };
 
     if (!DOM.svg || !DOM.form) return;
@@ -83,56 +88,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const renderGroupsPreview = () => {
         if (!DOM.groupsContainer) return;
+
         if (!state.groups.length) {
             DOM.groupsContainer.innerHTML = "<em>No groups yet.</em>";
             return;
         }
 
         DOM.groupsContainer.innerHTML = `
-    <table class="table table-sm">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Type</th>
-                <th>Material</th>
-                <th>Teeth</th>
-                <th>Parameters</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            ${state.groups.map((g, i) => {
-            const teethStr = g.teeth.map(t => TOOTH_LABEL_MAP[t]).sort().join(", ");
-            const paramsHTML = g.parameters && Object.keys(g.parameters).length
-                ? Object.entries(g.parameters).map(([id, val]) => {
-                    const label = g.parameterLabels[id] || `Param ${id}`;
-                    const type = g.parameterFieldTypes[id] || 'string';
-                    const options = g.parameterOptions[id] || [];
-
-                    let displayVal = val;
-                    if(type === 'boolean') displayVal = val == 1 ? 'Yes' : 'No';
-                    else if(type === 'select') displayVal = options.find(o=>o==val) || val;
-
-                    return `<div data-param-id="${id}"><strong>${label}:</strong> ${displayVal}</div>`;
-                }).join('')
-                : "-";
-
-            return `
+        <table class="table table-sm">
+            <thead>
                 <tr>
-                    <td>${i + 1}</td>
-                    <td>${g.typeOfWork || "-"}</td>
-                    <td>${g.material || "-"}</td>
-                    <td>${teethStr}</td>
-                    <td>${paramsHTML}</td>
-                    <td>
-                        <span style="width:14px;height:14px;display:inline-block;background:${g.color};border-radius:3px;"></span>
-                        <button type="button" class="btn btn-sm btn-link edit-params" data-group-id="${g.id}">Edit</button>
-                    </td>
+                    <th>#</th>
+                    <th>Type</th>
+                    <th>Material</th>
+                    <th>Teeth</th>
+                    <th>Parameters</th>
+                    <th>Color</th>
+                    <th>Edit</th>
+                    <th></th>
                 </tr>
-            `;
-        }).join('')}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                ${state.groups.map((g, i) => `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${g.typeOfWork || "-"}</td>
+                        <td>${g.material || "-"}</td>
+                        <td>${g.teeth.map(t => TOOTH_LABEL_MAP[t]).sort().join(", ")}</td>
+                        <td>
+                            ${g.parameters ? Object.entries(g.parameters).map(([id, value]) => {
+            const labelEl = $(`#parameters-container #param_${id}`).prev('label');
+            const label = g.parameterLabels[id] || `Param ${id}`;
+            const inputEl = $(`#parameters-container #param_${id}`);
+            let displayValue = value;
+
+            if (inputEl.attr('type') === 'checkbox') {
+                displayValue = value == 1 ? 'Yes' : 'No';
+            } else if (inputEl.is('select')) {
+                displayValue = inputEl.find(`option[value="${value}"]`).text() || value;
+            }
+
+            return `<div data-param-id="${id}"><strong>${label}:</strong> ${displayValue}</div>`;
+        }).join('') : "-"}
+                        </td>
+                        <td>
+                            <span style="width:14px;height:14px;display:inline-block;background:${g.color};border-radius:3px;"></span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-link edit-params" data-group-id="${g.id}">Edit</button>
+                        </td>
+                    </tr>
+                `).join("")}
+            </tbody>
+        </table>
     `;
     };
 
@@ -179,32 +187,51 @@ document.addEventListener("DOMContentLoaded", () => {
      * CLEAR / APPLY GROUP
      * ============================================================ */
     DOM.applyBtn?.addEventListener("click", () => {
-        if (!state.selection.size) { alert("Select at least one tooth."); return; }
+        if (!state.selection.size) {
+            alert("Select at least one tooth.");
+            return;
+        }
 
-        const typeId = DOM.typeSelect.val();
-        const typeLabel = DOM.typeSelect.find('option:selected').text();
-        const materialId = DOM.materialSelect.val();
-        const materialLabel = DOM.materialSelect.find('option:selected').text();
+        const typeRadio = document.querySelector('input[name="work_type_radio"]:checked');
+        const materialRadio = document.querySelector('input[name="material_of_work_radio"]:checked');
+
+        if (!typeRadio || !materialRadio) {
+            alert("Please select work type and material.");
+            return;
+        }
+
+        const typeId = typeRadio.dataset.id;
+        const typeLabel = typeRadio.dataset.label;
+        const materialId = materialRadio.value;
+        const materialLabel = materialRadio.dataset.label;
+
+        // update hidden selects
+        DOM.typeSelectHidden.val(typeId).trigger('change');
+        DOM.materialSelectHidden.val(materialId).trigger('change');
+
         const color = COLORS[state.groups.length % COLORS.length];
         const groupId = crypto.randomUUID();
         const teeth = [...state.selection];
+
         const parameters = JSON.parse(DOM.payloadInput.val() || "{}");
 
+        // Build parameter metadata
         const parameterLabels = {};
         const parameterFieldTypes = {};
         const parameterOptions = {};
 
         Object.keys(parameters).forEach(id => {
             const input = document.getElementById(`param_${id}`);
+            const label = input?.closest('div')?.querySelector('label')?.innerText || `Param ${id}`;
             let type = 'string';
             if(input) {
                 if(input.type === 'checkbox') type = 'boolean';
                 else if(input.tagName === 'SELECT') type = 'select';
             }
-            parameterLabels[id] = input?.closest('div')?.querySelector('label')?.innerText || `Param ${id}`;
+            parameterLabels[id] = label;
             parameterFieldTypes[id] = type;
             parameterOptions[id] = [];
-            if(type === 'select') {
+            if(type === 'select' && input) {
                 Array.from(input.options).forEach(opt => parameterOptions[id].push(opt.value));
             }
         });
@@ -216,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
             color,
             typeOfWorkId: typeId,
             typeOfWork: typeLabel,
-            materialId,
+            materialId: materialId,
             material: materialLabel,
             teeth,
             parameters,
@@ -225,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
             parameterOptions
         });
 
-        DOM.payloadInput.val("");
+        DOM.payloadInput.val(""); // clear payload
         resetSelection();
         updateTeethVisuals();
         renderGroupsPreview();
@@ -234,55 +261,57 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ============================================================
      * FETCH MATERIALS WHEN TYPE CHANGES
      * ============================================================ */
-    DOM.materialSelect.prop('disabled',true);
-    DOM.typeSelect.on('change', function(){
-        const workTypeId = $(this).val();
-        if(!workTypeId) return;
+    DOM.typeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            const workTypeId = this.dataset.id;
+            if (!workTypeId) return;
 
-        DOM.materialSelect.prop('disabled',true).empty().append(new Option('Loading...','',true,false));
+            // update hidden select
+            DOM.typeSelectHidden.val(workTypeId).trigger('change');
 
-        fetch(`/work_type/materials/${workTypeId}`)
-            .then(res=>res.json())
-            .then(materials=>{
-                DOM.materialSelect.empty().append(new Option('Select material','',true,false));
-                materials.forEach(m=>DOM.materialSelect.append(new Option(m.name,m.id,false,false)));
-                DOM.materialSelect.prop('disabled',false).trigger('change.select2');
-            });
+            fetch(`/work_type/materials/${workTypeId}`)
+                .then(res => res.json())
+                .then(materials => {
+                    DOM.materialRadiosContainer.innerHTML = '';
+                    if (!materials.length) {
+                        DOM.materialRadiosContainer.innerHTML = '<em class="text-muted">No materials for this type</em>';
+                        return;
+                    }
+                    materials.forEach(m => {
+                        const radioHTML = `
+                                <input type="radio" class="btn-check" name="material_of_work_radio" value="${m.id}" data-label="${m.name}" id="material_radio_${m.id}" autocomplete="off">
+                                <label class="type-of-material-btn btn-outline-primary" for="material_radio_${m.id}">${m.name}</label>
+                        `;
+                        DOM.materialRadiosContainer.insertAdjacentHTML('beforeend', radioHTML);
+                    });
+                });
+        });
     });
 
     /* ============================================================
      * PARAMETERS MODAL
      * ============================================================ */
-    DOM.addParamsBtn.on('click',()=>{
-        const workTypeId = DOM.typeSelect.val();
-        const materialId = DOM.materialSelect.val();
+    DOM.addParamsBtn.on('click', function() {
+        const typeRadio = document.querySelector('input[name="work_type_radio"]:checked');
+        const materialRadio = document.querySelector('input[name="material_of_work_radio"]:checked');
 
-        if(!workTypeId||!materialId){ alert('Select type and material'); return;}
+        if (!typeRadio || !materialRadio) {
+            alert('Please select work type and material first.');
+            return;
+        }
+
+        const workTypeId = typeRadio.dataset.id;
+        const materialId = materialRadio.value;
 
         fetch(`/work_type/${workTypeId}/material/${materialId}/parameters`)
-            .then(res=>res.json())
-            .then(parameters=>{
+            .then(res => res.json())
+            .then(parameters => {
                 renderParameters(parameters);
-
-                // Prefill if editing a group
-                if(selectedGroupId){
-                    const group = state.groups.find(g=>g.id===selectedGroupId);
-                    if(group?.parameters){
-                        Object.entries(group.parameters).forEach(([id,val])=>{
-                            const input=document.getElementById(`param_${id}`);
-                            if(!input) return;
-                            if(input.type==='checkbox') input.checked=val==1;
-                            else input.value=val;
-                        });
-                    }
-                }
-
                 $('#parameters-modal select').select2({
                     minimumResultsForSearch: Infinity,
-                    placeholder:"Please select",
-                    allowClear:true
+                    placeholder: "Please select",
+                    allowClear: true
                 });
-
                 DOM.parametersModal.modal('show');
             });
     });
@@ -328,52 +357,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    DOM.saveParamsBtn.on('click', () => {
+    DOM.saveParamsBtn.on('click', function() {
         const data = {};
-        const labels = {};
-        const types = {};
-        const options = {};
-
         $('#parameters-container [name]').each(function() {
-            const id = $(this).attr('name').match(/\d+/)[0];
-            const input = this;
-            let value;
-
-            if(input.type === 'checkbox') value = input.checked ? 1 : 0;
-            else value = input.value;
-
-            data[id] = value;
-
-            const label = $(input).closest('div').find('label').first().text() || `Param ${id}`;
-            labels[id] = label;
-
-            if(input.type === 'checkbox') types[id] = 'boolean';
-            else if(input.tagName === 'SELECT') types[id] = 'select';
-            else types[id] = 'string';
-
-            if(types[id] === 'select') {
-                options[id] = Array.from(input.options).map(o => o.value);
-            } else {
-                options[id] = [];
-            }
+            const name = $(this).attr('name').match(/\d+/)[0];
+            let value = $(this).attr('type') === 'checkbox' ? ($(this).is(':checked') ? 1 : 0) : $(this).val();
+            data[name] = value;
         });
 
         DOM.payloadInput.val(JSON.stringify(data));
-
-        if (selectedGroupId) {
-            const group = state.groups.find(g => g.id === selectedGroupId);
-            if (group) {
-                group.parameters = data;
-                group.parameterLabels = labels;
-                group.parameterFieldTypes = types;
-                group.parameterOptions = options;
-            }
-        }
-
         DOM.parametersModal.modal('hide');
-        renderGroupsPreview();
-        updateTeethVisuals();
-        selectedGroupId = null;
     });
 
     /* ============================================================
@@ -387,31 +380,38 @@ document.addEventListener("DOMContentLoaded", () => {
         const group = state.groups.find(g => g.id === selectedGroupId);
         if (!group) return;
 
-        DOM.typeSelect.val(group.typeOfWorkId).trigger('change');
+        // Set type select
+        DOM.typeSelectHidden.val(group.typeOfWorkId).trigger('change');
+        // Set material select
+        DOM.materialSelectHidden.val(group.materialId).trigger('change');
 
-        const interval = setInterval(() => {
-            if (!DOM.materialSelect.prop('disabled')) {
-                DOM.materialSelect.val(group.materialId).trigger('change');
-                clearInterval(interval);
+        // Fetch parameters for this type+material
+        fetch(`/work_type/${group.typeOfWorkId}/material/${group.materialId}/parameters`)
+            .then(res => res.json())
+            .then(parameters => {
+                renderParameters(parameters);
 
-                // Fetch parameters for this type+material
-                fetch(`/work_type/${group.typeOfWorkId}/material/${group.materialId}/parameters`)
-                    .then(res => res.json())
-                    .then(parameters => {
-                        renderParameters(parameters);
-                        if (group.parameters) {
-                            Object.entries(group.parameters).forEach(([id, val]) => {
-                                const input = document.getElementById(`param_${id}`);
-                                if (!input) return;
-                                if (input.type === 'checkbox') input.checked = val == 1;
-                                else input.value = val;
-                            });
-                        }
-                        $('#parameters-modal select').select2({ minimumResultsForSearch: Infinity, placeholder:"Please select", allowClear:true });
-                        DOM.parametersModal.modal('show');
+                // Fill existing values
+                if (group.parameters) {
+                    Object.entries(group.parameters).forEach(([id, val]) => {
+                        const input = document.getElementById(`param_${id}`);
+                        if (!input) return;
+
+                        if (input.type === 'checkbox') input.checked = val == 1;
+                        else input.value = val;
                     });
-            }
-        }, 50);
+                }
+
+                // Reinitialize select2 inside modal
+                $('#parameters-modal select').select2({
+                    minimumResultsForSearch: Infinity,
+                    placeholder: "Please select",
+                    allowClear: true
+                });
+
+                // Show modal
+                DOM.parametersModal.modal('show');
+            });
     });
 
 

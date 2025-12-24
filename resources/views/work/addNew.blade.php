@@ -402,21 +402,53 @@
                     <input type="hidden" name="groups_payload" id="groups_payload">
                     <input type="hidden" name="parameters_payload" id="parameters_payload">
 
-                    <div class="form-group select-px-15">
-                        <label for="type_of_work">Choose type of work:</label>
-                        <select class="form-control px15 select-2" id="type_of_work" name="type_of_work">
-                            <option value="0" disabled selected> Please select </option>
-                            @foreach($work_types as $type)
-                                <option value="{{ $type->id }}">{{ $type->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+{{--                    <div class="form-group select-px-15">--}}
+{{--                        <label for="type_of_work">Choose type of work:</label>--}}
+{{--                        <select class="form-control px15 select-2" id="type_of_work" name="type_of_work">--}}
+{{--                            <option value="0" disabled selected> Please select </option>--}}
+{{--                            @foreach($work_types as $type)--}}
+{{--                                <option value="{{ $type->id }}">{{ $type->name }}</option>--}}
+{{--                            @endforeach--}}
+{{--                        </select>--}}
+{{--                    </div>--}}
 
-                    <div class="form-group select-px-15">
-                        <label for="material_of_work">Choose material:</label>
-                        <select class="form-control px-15 select-2" id="material_of_work" name="material_of_work">
-                        </select>
-                    </div>
+{{--                    <div class="form-group select-px-15">--}}
+{{--                        <label for="material_of_work">Choose material:</label>--}}
+{{--                        <select class="form-control px-15 select-2" id="material_of_work" name="material_of_work">--}}
+{{--                        </select>--}}
+{{--                    </div>--}}
+
+                        <input type="hidden" id="type_of_work" name="type_of_work">
+                        <input type="hidden" id="material_of_work" name="material_of_work">
+
+                        <div class="form-group select-px-15">
+                            <label>Choose type of work:</label>
+
+                            <div class="type-of-work-group" role="group" id="typeOfWorkRadios">
+                                @foreach($work_types as $type)
+                                    <input type="radio"
+                                           class="btn-check work-type-radio"
+                                           name="work_type_radio"
+                                           id="work-type-{{ $type->id }}"
+                                           data-id="{{ $type->id }}"
+                                           data-label="{{ $type->name }}"
+                                           autocomplete="off">
+
+                                    <label class="type-of-work-btn btn-outline-primary"
+                                           for="work-type-{{ $type->id }}">
+                                        {{ $type->name }}
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group select-px-15">
+                            <label>Choose material:</label>
+
+                            <div class="type-of-material" role="group" id="material_radios_container">
+                                <em class="text-muted">Select type of work first</em>
+                            </div>
+                        </div>
 
                     <div class="work-add-remove">
                         <div class="">

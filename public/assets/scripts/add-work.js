@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
          dropdowns.forEach(drop => {
                if (this.checked) {
                   drop.setAttribute("disabled", "disabled", "disabled");   // disable
-                  drop.style.opacity = "0.5";                  
+                  drop.style.opacity = "0.5";
                } else {
                   drop.removeAttribute("disabled");            // enable
                   drop.style.opacity = "1";
@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
       };
 
       state.groups.push(newGroup);
-      console.log(newGroup); 
+      console.log(newGroup);
       state.selection.clear();
       updateTeethVisuals();
       renderGroupsPreview();
