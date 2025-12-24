@@ -149,13 +149,6 @@ NB: this file contains the list of components/scss partial along with the style.
 
 /* Hero section */
 
-.nav-notification__single--unread {
-    transition: opacity 0.3s ease;
-}
-.nav-notification__single--unread.read {
-    opacity: 0.4;
-}
-
 .dental-hero {
     position: relative;
     padding: 70px 40px 0px 40px;
@@ -410,9 +403,46 @@ NB: this file contains the list of components/scss partial along with the style.
     gap: 20px;
 }
 
-/* Upload zona */
-.work-upload-wrapper {
-    margin-bottom: 24px;
+.type-of-work-group{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 3px;
+    justify-content: start;
+}
+
+.type-of-work-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    box-shadow: none;
+    transition: var(--transition);
+    border-radius: 5px;
+    font-weight: 400;
+    height: 50px;
+    font-size: small;
+}
+
+.type-of-material {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 3px;
+    justify-content: start;
+}
+
+.type-of-material-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    box-shadow: none;
+    transition: var(--transition);
+    border-radius: 5px;
+    font-weight: 400;
+    height: 50px;
+    font-size: small;
 }
 
 /* Dugme dole centrirano */

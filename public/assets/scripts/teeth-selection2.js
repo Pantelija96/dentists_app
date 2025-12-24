@@ -1,20 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     /* ============================================================
-     * SELECT2 INIT
-     * ============================================================ */
-    $(".select-2").select2({
-        minimumResultsForSearch: Infinity,
-        placeholder: "Please select",
-        allowClear: true
-    });
-
-    /* ============================================================
      * DOM CACHE
      * ============================================================ */
     const DOM = {
-        typeSelect: $('#type_of_work'),           // jQuery
-        materialSelect: $('#material_of_work'),   // jQuery
+        typeRadios: document.querySelectorAll('input[name="work_type_radio"]'),
+        materialRadiosContainer: document.getElementById("material_radios_container"),
+        materialSelectHidden: $('#material_of_work'),
+        typeSelectHidden: $('#type_of_work'),
         addParamsBtn: $('#add_parameters_button'),
         parametersModal: $('#parameters-modal'),
         parametersContainer: $('#parameters-container'),
@@ -25,7 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
         clearBtn: document.getElementById("clearSelection"),
         groupsContainer: document.getElementById("toothGroupsContainer"),
         form: document.querySelector(".work-page form"),
-        svg: document.querySelector(".tooth-chart svg")
+        svg: document.querySelector(".tooth-chart svg"),
+        uploadsContainer: document.getElementById('uploads-container'),
+        addFileBtn: document.getElementById('add-file')
     };
 
     if (!DOM.svg || !DOM.form) return;
@@ -108,11 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         <td>${g.teeth.map(t => TOOTH_LABEL_MAP[t]).sort().join(", ")}</td>
                         <td>
                             ${g.parameters ? Object.entries(g.parameters).map(([id, value]) => {
-            // Get parameter label from modal
             const labelEl = $(`#parameters-container #param_${id}`).prev('label');
             const label = labelEl.length ? labelEl.text() : `Param ${id}`;
-
-            // Determine field type to display nicely
             const inputEl = $(`#parameters-container #param_${id}`);
             let displayValue = value;
 
@@ -182,15 +174,27 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const typeId = DOM.typeSelect.val();
-        const typeLabel = DOM.typeSelect.find('option:selected').text();
-        const materialId = DOM.materialSelect.val();
-        const materialLabel = DOM.materialSelect.find('option:selected').text();
+        const typeRadio = document.querySelector('input[name="work_type_radio"]:checked');
+        const materialRadio = document.querySelector('input[name="material_of_work_radio"]:checked');
+
+        if (!typeRadio || !materialRadio) {
+            alert("Please select work type and material.");
+            return;
+        }
+
+        const typeId = typeRadio.dataset.id;
+        const typeLabel = typeRadio.dataset.label;
+        const materialId = materialRadio.value;
+        const materialLabel = materialRadio.dataset.label;
+
+        // update hidden selects
+        DOM.typeSelectHidden.val(typeId).trigger('change');
+        DOM.materialSelectHidden.val(materialId).trigger('change');
+
         const color = COLORS[state.groups.length % COLORS.length];
         const groupId = crypto.randomUUID();
         const teeth = [...state.selection];
 
-        // Parameters for this group, temporarily empty
         const parameters = JSON.parse(DOM.payloadInput.val() || "{}");
 
         teeth.forEach(t => state.toothToGroup.set(t, groupId));
@@ -206,40 +210,56 @@ document.addEventListener("DOMContentLoaded", () => {
             parameters
         });
 
-        DOM.payloadInput.val(""); // clear payload for next group
+        DOM.payloadInput.val(""); // clear payload
         resetSelection();
         updateTeethVisuals();
         renderGroupsPreview();
     });
 
     /* ============================================================
-     * FETCH MATERIALS WHEN WORK TYPE CHANGES
+     * FETCH MATERIALS WHEN WORK TYPE RADIO CHANGES
      * ============================================================ */
-    DOM.materialSelect.prop('disabled', true);
-    DOM.typeSelect.on('change', function() {
-        const workTypeId = $(this).val();
-        if (!workTypeId) return;
+    DOM.typeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            const workTypeId = this.dataset.id;
+            if (!workTypeId) return;
 
-        fetch(`/work_type/materials/${workTypeId}`)
-            .then(res => res.json())
-            .then(materials => {
-                DOM.materialSelect.empty().append(new Option('Select material', '', true, false)).prop('disabled', false);
-                materials.forEach(m => DOM.materialSelect.append(new Option(m.name, m.id, false, false)));
-                DOM.materialSelect.trigger('change.select2');
-            });
+            // update hidden select
+            DOM.typeSelectHidden.val(workTypeId).trigger('change');
+
+            fetch(`/work_type/materials/${workTypeId}`)
+                .then(res => res.json())
+                .then(materials => {
+                    DOM.materialRadiosContainer.innerHTML = '';
+                    if (!materials.length) {
+                        DOM.materialRadiosContainer.innerHTML = '<em class="text-muted">No materials for this type</em>';
+                        return;
+                    }
+                    materials.forEach(m => {
+                        const radioHTML = `
+                                <input type="radio" class="btn-check" name="material_of_work_radio" value="${m.id}" data-label="${m.name}" id="material_radio_${m.id}" autocomplete="off">
+                                <label class="type-of-material-btn btn-outline-primary" for="material_radio_${m.id}">${m.name}</label>
+                        `;
+                        DOM.materialRadiosContainer.insertAdjacentHTML('beforeend', radioHTML);
+                    });
+                });
+        });
     });
 
     /* ============================================================
      * PARAMETERS MODAL
      * ============================================================ */
     DOM.addParamsBtn.on('click', function() {
-        const workTypeId = DOM.typeSelect.val();
-        const materialId = DOM.materialSelect.val();
+        const typeRadio = document.querySelector('input[name="work_type_radio"]:checked');
+        const materialRadio = document.querySelector('input[name="material_of_work_radio"]:checked');
 
-        if (!workTypeId || !materialId) {
+        if (!typeRadio || !materialRadio) {
             alert('Please select work type and material first.');
             return;
         }
+
+        const workTypeId = typeRadio.dataset.id;
+        const materialId = materialRadio.value;
 
         fetch(`/work_type/${workTypeId}/material/${materialId}/parameters`)
             .then(res => res.json())
@@ -316,107 +336,69 @@ document.addEventListener("DOMContentLoaded", () => {
         DOM.parametersModal.modal('hide');
     });
 
-    const container = document.getElementById('uploads-container');
-    const addBtn = document.getElementById('add-file');
 
-    let index = 1;
+    /* ============================================================
+     * FILE UPLOADS
+     * ============================================================ */
+    let index = DOM.uploadsContainer.querySelectorAll('.upload-card').length;
 
     // Open file dialog
-    container.addEventListener('click', e => {
+    DOM.uploadsContainer.addEventListener('click', e => {
         const uploadBtn = e.target.closest('.btn-upload');
         if (!uploadBtn) return;
-
-        uploadBtn
-            .closest('.upload-card')
-            .querySelector('input[type="file"]')
-            .click();
+        uploadBtn.closest('.upload-card').querySelector('input[type="file"]').click();
     });
 
     // File selected
-    container.addEventListener('change', e => {
+    DOM.uploadsContainer.addEventListener('change', e => {
         if (!e.target.classList.contains('upload-one')) return;
-
         const file = e.target.files[0];
-        const list = e.target
-            .closest('.upload-card')
-            .querySelector('.file-list');
-
+        const list = e.target.closest('.upload-card').querySelector('.file-list');
         list.innerHTML = '';
-
         if (!file) return;
-
         list.innerHTML = `
             <li class="d-flex align-items-center justify-content-between">
                 <span>${file.name}</span>
-                <button type="button" class="btn remove-file">
-                    ✕
-                </button>
+                <button type="button" class="btn remove-file">✕</button>
             </li>
         `;
     });
 
     // Remove file
-    container.addEventListener('click', e => {
+    DOM.uploadsContainer.addEventListener('click', e => {
         if (!e.target.classList.contains('remove-file')) return;
-
         const card = e.target.closest('.upload-card');
         card.querySelector('input[type="file"]').value = '';
         card.querySelector('.file-list').innerHTML = '';
     });
 
     // Add new upload card
-    addBtn.addEventListener('click', e => {
+    DOM.addFileBtn.addEventListener('click', e => {
         e.preventDefault();
-
         index++;
-
-        const last = container.querySelector('.upload-card:last-child');
+        const last = DOM.uploadsContainer.querySelector('.upload-card:last-child');
         const clone = last.cloneNode(true);
-
         clone.dataset.index = index;
         clone.querySelector('h6').textContent = `Upload file #${index}`;
-
         const input = clone.querySelector('input[type="file"]');
         input.id = `upload-${index}`;
         input.value = '';
-
         clone.querySelector('.file-list').innerHTML = '';
-
-        container.appendChild(clone);
+        DOM.uploadsContainer.appendChild(clone);
     });
 
     /* ============================================================
      * FORM SUBMIT
      * ============================================================ */
-    // DOM.form.addEventListener("submit", e => {
-    //     e.preventDefault();
-    //
-    //     fetch("/api/work", {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify({
-    //             nameOfWork: DOM.form.querySelector("input[type=text]").value,
-    //             skipPart: DOM.checkboxSkip.checked,
-    //             groups: state.groups
-    //         })
-    //     })
-    //         .then(r => r.json())
-    //         .then(() => alert("Work saved successfully"))
-    //         .catch(() => alert("Error saving work"));
-    // });
+    DOM.form.addEventListener('submit', function () {
+        document.getElementById('groups_payload').value = JSON.stringify(state.groups);
+        document.getElementById('parameters_payload').value = JSON.stringify(window.selectedParameters || {});
+    });
 
-    const form = document.querySelector('.work-page form');
-
-    form.addEventListener('submit', function () {
-
-        // Groups (teeth + work type + material + params)
-        document.getElementById('groups_payload').value =
-            JSON.stringify(state.groups);
-
-        // Parameters (modal collected data)
-        document.getElementById('parameters_payload').value =
-            JSON.stringify(window.selectedParameters || {});
-
+    $(".select-2").select2({
+        minimumResultsForSearch: Infinity,
+        placeholder: "Please select",
+        allowClear: true
     });
 
 });
