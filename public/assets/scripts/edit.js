@@ -105,7 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     <th>Parameters</th>
                     <th>Color</th>
                     <th>Edit</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -116,26 +115,28 @@ document.addEventListener("DOMContentLoaded", () => {
                         <td>${g.material || "-"}</td>
                         <td>${g.teeth.map(t => TOOTH_LABEL_MAP[t]).sort().join(", ")}</td>
                         <td>
-                            ${g.parameters ? Object.entries(g.parameters).map(([id, value]) => {
-            const labelEl = $(`#parameters-container #param_${id}`).prev('label');
-            const label = g.parameterLabels[id] || `Param ${id}`;
-            const inputEl = $(`#parameters-container #param_${id}`);
-            let displayValue = value;
-
-            if (inputEl.attr('type') === 'checkbox') {
-                displayValue = value == 1 ? 'Yes' : 'No';
-            } else if (inputEl.is('select')) {
-                displayValue = inputEl.find(`option[value="${value}"]`).text() || value;
-            }
-
-            return `<div data-param-id="${id}"><strong>${label}:</strong> ${displayValue}</div>`;
-        }).join('') : "-"}
+                            ${
+            g.parameters
+                ? Object.entries(g.parameters).map(([id, value]) => {
+                    const label = g.parameterLabels?.[id] || `Param ${id}`;
+                    const displayValue =
+                        value === 1 ? 'Yes' :
+                            value === 0 ? 'No' :
+                                value;
+                    return `<div><strong>${label}:</strong> ${displayValue}</div>`;
+                }).join('')
+                : "-"
+        }
                         </td>
                         <td>
                             <span style="width:14px;height:14px;display:inline-block;background:${g.color};border-radius:3px;"></span>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-link edit-params" data-group-id="${g.id}">Edit</button>
+                            <button type="button"
+                                class="btn btn-sm btn-link edit-params"
+                                data-group-id="${g.id}">
+                                Edit
+                            </button>
                         </td>
                     </tr>
                 `).join("")}
@@ -215,8 +216,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const parameters = JSON.parse(DOM.payloadInput.val() || "{}");
 
-        // Build parameter metadata
         const parameterLabels = {};
+        $('#parameters-container [name]').each(function () {
+            const id = $(this).attr('name').match(/\d+/)[0];
+            const labelText =
+                $(this).closest('.form-group, .form-check')
+                    .find('label')
+                    .first()
+                    .text()
+                    .trim();
+            parameterLabels[id] = labelText || `Param ${id}`;
+        });
+
+        // Build parameter metadata
+
         const parameterFieldTypes = {};
         const parameterOptions = {};
 
@@ -357,16 +370,48 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    DOM.saveParamsBtn.on('click', function() {
+    DOM.saveParamsBtn.on('click', function () {
+
         const data = {};
-        $('#parameters-container [name]').each(function() {
-            const name = $(this).attr('name').match(/\d+/)[0];
-            let value = $(this).attr('type') === 'checkbox' ? ($(this).is(':checked') ? 1 : 0) : $(this).val();
-            data[name] = value;
+        const labels = {};
+
+        $('#parameters-container [name]').each(function () {
+            const id = $(this).attr('name').match(/\d+/)[0];
+
+            let value;
+            if (this.type === 'checkbox') {
+                value = $(this).is(':checked') ? 1 : 0;
+            } else {
+                value = $(this).val();
+            }
+
+            const labelText =
+                $(this).closest('.form-group, .form-check')
+                    .find('label')
+                    .first()
+                    .text()
+                    .trim();
+
+            data[id] = value;
+            labels[id] = labelText || `Param ${id}`;
         });
 
+        // used for NEW group creation
         DOM.payloadInput.val(JSON.stringify(data));
+
+        // EDIT existing group
+        if (selectedGroupId) {
+            const group = state.groups.find(g => g.id === selectedGroupId);
+            if (group) {
+                group.parameters = data;
+                group.parameterLabels = labels;
+            }
+        }
+
+        selectedGroupId = null;
+
         DOM.parametersModal.modal('hide');
+        renderGroupsPreview();
     });
 
     /* ============================================================
