@@ -60,7 +60,6 @@
                                             <label for="password">Password</label>
                                             <div class="position-relative">
                                                 <input id="password" type="password" class="form-control" name="password" required>
-                                                <div class="uil uil-eye-slash text-lighten fs-15 field-icon toggle-password2">
                                                 </div>
                                             </div>
                                         </div>

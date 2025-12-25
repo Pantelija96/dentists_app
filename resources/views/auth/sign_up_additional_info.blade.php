@@ -53,8 +53,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="country" class="il-gray fs-14 fw-500 align-center mb-10">Select Your Country</label>
-                                                <select class="form-control px-15 select-2" id="country" name="country">
-                                                    <option value="0">Select country</option>
+                                                <select class="form-control px-15 select-2" id="country" name="country" placeholder="Select your country">
                                                     <option value="Serbia" {{ old('country') == "Serbia" ? 'selected' : '' }}>Serbia</option>
                                                     <option value="Croatia" {{ old('country') == "Croatia" ? 'selected' : '' }}>Croatia</option>
                                                 </select>
@@ -79,8 +78,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="language" class="il-gray fs-14 fw-500 align-center mb-10">Select Your Language</label>
-                                                <select class="form-control px-15 select-2" id="language" name="language">
-                                                    <option value="0" selected>Select language</option>
+                                                <select class="form-control px-15 select-2" id="language" name="language" placeholder="Select language">
                                                     <option value="en" {{ old('language') == 'en' ? 'selected' : '' }}>English</option>
 {{--                                                    <option value="sr" {{ old('language') == 'sr' ? 'selected' : '' }}>Serbian</option>--}}
 {{--                                                    <option value="cr" {{ old('language') == 'cr' ? 'selected' : '' }}>Croatian</option>--}}

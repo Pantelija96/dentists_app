@@ -4,7 +4,8 @@
             icon: 'success',
             title: 'Success',
             text: @json(session('success')),
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#049ED2'
         });
     </script>
 @endif
@@ -15,7 +16,8 @@
             icon: 'error',
             title: 'Error',
             text: @json(session('error')),
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#0480AA'
         });
     </script>
 @endif
@@ -26,7 +28,8 @@
             icon: 'info',
             title: 'Info',
             text: @json(session('info')),
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#049ED2'
         });
     </script>
 @endif
@@ -37,7 +40,8 @@
             icon: 'warning',
             title: 'Warning',
             text: @json(session('warning')),
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#0480AA'
         });
     </script>
 @endif

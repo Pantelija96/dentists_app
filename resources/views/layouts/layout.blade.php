@@ -103,8 +103,8 @@
                             <div class="dropdown-wrapper">
                                 <h2 class="dropdown-wrapper__title">
                                     Notifications @if($notificationsCount > 0) <span class="badge-circle badge-warning ms-1"> {{ $notificationsCount }} </span> @endif
-                                </h2>
-
+                                    <a href="" class="view" title = "Mark all as read"><i class="uil uil-check"></i></a>
+                                </h2>                               
                                 <ul>
                                     @forelse($notifications as $notification)
                                         <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
