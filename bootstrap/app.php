@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AuditMiddleware;
 use App\Http\Middleware\EnsureAdmin;
 use App\Http\Middleware\EnsureSuperAdmin;
 use App\Http\Middleware\EnsureUserIsLoggedIn;
@@ -14,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->append(AuditMiddleware::class);
         // Register aliases
         $middleware->alias([
             'auth' => EnsureUserIsLoggedIn::class,
