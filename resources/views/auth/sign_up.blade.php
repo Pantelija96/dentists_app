@@ -55,8 +55,7 @@
                                         <div class="edit-profile__body">
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1" class="il-gray fs-14 fw-500 align-center mb-10">Type of profile</label>
-                                                <select class="form-control px-15 select-2" id="exampleFormControlSelect1" name="type">
-                                                    <option value="0" selected>Select type</option>
+                                                <select class="form-control px-15 select-2" id="exampleFormControlSelect1" name="type" placeholder="Select a type"> 
                                                     <option value="legal" {{ old('type') == 1 ? 'selected' : '' }}>Legal entity</option>
                                                     <option value="person" {{ old('type') == 2 ? 'selected' : '' }}>Person</option>
                                                 </select>
@@ -81,14 +80,12 @@
                                                 <label for="password-field">password</label>
                                                 <div class="position-relative">
                                                     <input id="password-field" type="password" class="form-control" name="password" placeholder="Password" required>
-                                                    <div class="uil uil-eye-slash text-lighten fs-15 field-icon toggle-password2"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group mb-15">
                                                 <label for="repeat-password-field">repeat password</label>
                                                 <div class="position-relative">
                                                     <input id="repeat-password-field" type="password" class="form-control" name="password_confirmation" placeholder="Please repeat your password" required>
-                                                    <div class="uil uil-eye-slash text-lighten fs-15 field-icon toggle-password2"></div>
                                                 </div>
                                             </div>
                                             <div class="admin-condition">
