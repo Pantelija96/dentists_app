@@ -422,6 +422,7 @@ NB: this file contains the list of components/scss partial along with the style.
     font-weight: 400;
     height: 50px;
     font-size: small;
+    text-align: center;
 }
 
 .type-of-material {
@@ -430,6 +431,7 @@ NB: this file contains the list of components/scss partial along with the style.
     grid-template-rows: repeat(3, 1fr);
     gap: 3px;
     justify-content: start;
+    text-align: center
 }
 
 .type-of-material-btn {
@@ -27261,7 +27263,7 @@ body:after {
     }
 }
 .admin .edit-profile .card {
-    border-radius: 6px;
+    border-radius: 5px 5px 0px 0px;
 }
 .admin .edit-profile .card .card-header {
     border-bottom: 1px solid var(--border-color);
@@ -27318,7 +27320,6 @@ body:after {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    margin-top: 30px;
     border-radius: 0 0 6px 6px;
 }
 .admin-topbar p {
