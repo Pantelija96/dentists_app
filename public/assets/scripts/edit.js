@@ -292,8 +292,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                     materials.forEach(m => {
                         const radioHTML = `
-                                <input type="radio" class="btn-check" name="material_of_work_radio" value="${m.id}" data-label="${m.name}" id="material_radio_${m.id}" autocomplete="off">
-                                <label class="type-of-material-btn btn-outline-primary" for="material_radio_${m.id}">${m.name}</label>
+                                <input type="radio" class="btn-check" name="material_of_work_radio" value="${m.id}" data-label="${m.translated_name}" id="material_radio_${m.id}" autocomplete="off">
+                                <label class="type-of-material-btn btn-outline-primary" for="material_radio_${m.id}">${m.translated_name}</label>
                         `;
                         DOM.materialRadiosContainer.insertAdjacentHTML('beforeend', radioHTML);
                     });

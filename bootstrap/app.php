@@ -7,6 +7,7 @@ use App\Http\Middleware\EnsureUserIsLoggedIn;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\SetLocale;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,8 +16,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->append(AuditMiddleware::class);
-        // Register aliases
+        $middleware->web(append: [
+            SetLocale::class,
+        ]);
+
+        $middleware->web(append: [
+            AuditMiddleware::class,
+        ]);
+
         $middleware->alias([
             'auth' => EnsureUserIsLoggedIn::class,
             'admin' => EnsureAdmin::class,
@@ -25,4 +32,5 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
-    })->create();
+    })
+    ->create();

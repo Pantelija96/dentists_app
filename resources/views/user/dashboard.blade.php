@@ -17,11 +17,11 @@
                         <div class="userDatatable adv-table-table global-shadow border-light-0 w-100 adv-table">
                             <div class="table-responsive">
                                 <div class="adv-table-table__header">
-                                    <h4>{{ auth()->user()->first_name }}'s dashboard</h4>
+                                    <h4>{{ auth()->user()->first_name }} - dashboard</h4>
                                     <div class="adv-table-table__button" style="display: flex;">
                                         <div class="action-btn">
                                             <a href="{{ route('work.show.addNew') }}" class="btn px-15 btn-primary" style="color: #fff;">
-                                                <i class="las la-plus fs-16"></i>Add work</a>
+                                                <i class="las la-plus fs-16"></i>{{ __('app.add_work') }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -33,28 +33,28 @@
                                             <span class="userDatatable-title">id</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">user</span>
+                                            <span class="userDatatable-title">{{ __('app.user') }}</span>
                                         </th>
                                         <th>
                                             <span class="userDatatable-title">emaill</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">work name</span>
+                                            <span class="userDatatable-title">{{ __('app.work_name') }}</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">files</span>
+                                            <span class="userDatatable-title">{{ __('app.files') }}</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">date</span>
+                                            <span class="userDatatable-title">{{ __('app.date') }}</span>
                                         </th>
                                         <th data-type="html" data-name='status'>
                                             <span class="userDatatable-title">status</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">Publish</span>
+                                            <span class="userDatatable-title">{{ __('app.publish') }}</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title float-end">action</span>
+                                            <span class="userDatatable-title float-end">{{ __('app.action') }}</span>
                                         </th>
                                     </tr>
                                     </thead>
@@ -85,18 +85,18 @@
                                             </td>
                                             <td>
                                                 <div class="userDatatable-content">
-                                                    <a href="{{ route('work.download', $work_order->id) }}">Link to files</a>
+                                                    <a href="{{ route('work.download', $work_order->id) }}">{{ __('app.link') }}</a>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="userDatatable-content">
-                                                    {{ $work_order->created_at->format('F d, Y @ H:i') }}
+                                                    {{ $work_order->created_at->translatedFormat('F d, Y @ H:i') }}
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="userDatatable-content d-inline-block">
                                                     <span class="rounded-pill userDatatable-content-status active" style="background-color: {{ $work_order->status->color ?? '#ccc' }}; color: #000;">
-                                                        {{ $work_order->status->name ?? 'Unknown' }}
+                                                        {{ $work_order->status->translated_name ?? 'Unknown' }}
                                                     </span>
                                                 </div>
                                             </td>
@@ -104,29 +104,29 @@
                                                 <div class="d-flex ">
                                                     @if($work_order->draft)
                                                         <a href="{{ route('work.publish', $work_order->id) }}" class="btn btn-primary btn-sm" style = "color: white;">
-                                                            Publish
+                                                            {{ __('app.publish') }}
                                                         </a>
                                                     @else
-                                                        <span>Published</span>
+                                                        <span>{{ __('app.published') }}</span>
                                                     @endif
                                                 </div>
                                             </td>
                                             <td>
                                                 <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                     <li>
-                                                        <a href="{{ route('work.inspect', $work_order->id) }}" class="view" title = "Inspect work">
+                                                        <a href="{{ route('work.inspect', $work_order->id) }}" class="view" title = "{{ __('app.inspect') }}">
                                                             <i class="uil uil-eye"></i>
                                                         </a>
                                                     </li>
                                                     @if(!$work_order->locked)
                                                         <li>
-                                                            <a href="{{ route('work.edit', $work_order->id) }}" class="view" title = "Edit work">
+                                                            <a href="{{ route('work.edit', $work_order->id) }}" class="view" title = "{{ __('app.edit') }}">
                                                                 <i class="uil uil-pen"></i>
                                                             </a>
                                                         </li>
                                                         @if(!$work_order->deleted)
                                                             <li>
-                                                                <a href="{{ route('work.remove', $work_order->id) }}" class="view" title = "Delete work">
+                                                                <a href="{{ route('work.remove', $work_order->id) }}" class="view" title = "{{ __('app.delete_work_order') }}">
                                                                     <i class="uil uil-trash-alt"></i>
                                                                 </a>
                                                             </li>
@@ -151,7 +151,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center">No work orders made yet.</td>
+                                            <td colspan="5" class="text-center">{{ __('app.no_work_orders') }}</td>
                                         </tr>
                                     @endforelse
                                     </tbody>
@@ -172,7 +172,7 @@
 
 @section('additionalPageJS')
     <script>
-        window.statusesFromDB = @json($statuses);
+        window.statusesFromDB = @json($statusesForJs);
     </script>
     <script src="{{ asset('assets/scripts/user-dashboard.js') }}"></script>
 @endsection

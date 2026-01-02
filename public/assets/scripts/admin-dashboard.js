@@ -24,7 +24,7 @@ FooTable.WorkOrdersFiltering = FooTable.Filtering.extend({
 
         // Add DB statuses
         self.statuses.forEach(status => {
-            self.$statusSelect.append($('<option/>', { text: status.name, value: status.name }));
+            self.$statusSelect.append($('<option/>', { text: status.traslation, value: status.traslation }));
         });
     },
 

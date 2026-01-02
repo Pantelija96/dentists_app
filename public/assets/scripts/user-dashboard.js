@@ -31,8 +31,9 @@ $(function () {
 
             // Populate statuses from DB
             self.statuses.forEach(status => {
+
                 self.$statusSelect.append(
-                    $('<option/>', { text: status.name, value: status.name })
+                    $('<option/>', { text: status.traslation, value: status.traslation })
                 );
             });
         },

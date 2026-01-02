@@ -13,12 +13,9 @@ class WorkTypeController extends Controller
 
     public function materials(WorkType $workType)
     {
-        return $workType->materials()
-            ->select([
-                'materials.id',
-                'materials.name',
-            ])
-            ->get();
+        return response()->json(
+            $workType->materials()->get()
+        );
     }
 
     public function parameters(WorkType $workType, Material $material)

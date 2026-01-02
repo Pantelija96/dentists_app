@@ -100,6 +100,16 @@ Route::get('/_optimize', function () {
     ]);
 });
 
+Route::get('/lang/{locale}', function (string $locale) {
+    abort_unless(
+        in_array($locale, config('app.supported_locales')),
+        400
+    );
+//    app()->setLocale($locale);
+    session(['locale' => $locale]);
+    return back();
+});
+
 
 
 

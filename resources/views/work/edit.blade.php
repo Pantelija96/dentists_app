@@ -384,12 +384,12 @@
                 <div class="work-fields">
                     @if(auth()->user()->role == 'admin')
                         <div class="form-group select-px-15">
-                            <label for="type_of_work">Edit work order for user:</label> <span> {{ $work->user->first_name }} {{ $work->user->last_name }} => {{ $work->user->email }}</span>
+                            <label for="type_of_work">{{ __('app.edit_for_user') }}:</label> <span> {{ $work->user->first_name }} {{ $work->user->last_name }} => {{ $work->user->email }}</span>
                         </div>
                     @endif
 
                     <div class="form-group">
-                        <label for="work_name">Name of work</label>
+                        <label for="work_name">{{ __('app.work_name') }}</label>
                         <input type="text" class="form-control" style="height: 3rem;" placeholder="Type name of work here" id="work_name" name="work_name" value="{{ $work->name }}">
                     </div>
 
@@ -400,7 +400,7 @@
                         <input type="hidden" id="material_of_work" name="material_of_work">
 
                         <div class="form-group select-px-15">
-                            <label>Choose type of work:</label>
+                            <label>{{ __('app.type_of_work') }}:</label>
 
                             <div class="type-of-work-group" role="group" id="typeOfWorkRadios">
                                 @foreach($work_types as $type)
@@ -414,24 +414,24 @@
 
                                     <label class="type-of-work-btn btn-outline-primary"
                                            for="work-type-{{ $type->id }}">
-                                        {{ $type->name }}
+                                        {{ $type->translated_name }}
                                     </label>
                                 @endforeach
                             </div>
                         </div>
 
                         <div class="form-group select-px-15">
-                            <label>Choose material:</label>
+                            <label>{{ __('app.choose_material') }}:</label>
 
                             <div class="type-of-material" role="group" id="material_radios_container">
-                                <em class="text-muted">Select type of work first</em>
+                                <em class="text-muted">{{ __('app.select_work_type') }}</em>
                             </div>
                         </div>
 
                     <div class="work-add-remove">
                         <div class="">
                             <button type="button" class="btn px-15 btn-primary" style="color: white;" id="add_parameters_button">
-                                <i class="las la-plus fs-16"></i>Add parameters
+                                <i class="las la-plus fs-16"></i>{{ __('app.add_parameters') }}
                             </button>
 
                             <!-- Add Parameters Modal -->
@@ -439,7 +439,7 @@
                                 <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- larger modal for multiple fields -->
                                     <div class="modal-content radius-xl">
                                         <div class="modal-header">
-                                            <h6 class="modal-title fw-500" id="parametersModalLabel">Select Parameters</h6>
+                                            <h6 class="modal-title fw-500" id="parametersModalLabel">{{ __('app.select_parameters') }}</h6>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -451,8 +451,8 @@
                                         </div>
                                         <div class="modal-footer">
                                             <div class="button-group d-flex pt-25">
-                                                <button type="button" class="btn btn-primary" id="save-parameters">Finish</button>
-                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn btn-primary" id="save-parameters">{{ __('app.finish') }}</button>
+                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{ __('app.cancel') }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -462,11 +462,11 @@
                         </div>
 
                         <button type="button" id="applyToothGroup" class="btn btn-outline-primary">
-                            Apply to selected teeth
+                            {{ __('app.apply_to_teeth') }}
                         </button>
 
                         <button type="button" id="clearSelection" class="btn btn-outline-danger">
-                            Clear selection
+                            {{ __('app.clear_selection') }}
                         </button>
                     </div>
 
@@ -474,17 +474,17 @@
                     <div class="form-check" style="padding-top: 10px;">
                         <input type="checkbox" id="skipPart" class="form-check-input">
                         <label for="skipPart" class="form-check-label">
-                            I want to skip this part
+                            {{ __('app.skip') }}
                         </label>
                     </div>
 
                     <div class="card" style="max-height: 260px; overflow-y: auto; border-radius: 8px; margin-bottom: 50px;">
                         <div class="card-header" style="padding: .5rem 1rem;">
-                            <strong>Selected tooth groups</strong>
+                            <strong>{{ __('app.selected_teeth_groups') }}</strong>
                         </div>
                         <div class="card-body" style="padding: .5rem 1rem;">
                             <div id="toothGroupsContainer" style="font-size: 0.85rem; color: #555;">
-                                <em>No groups yet.</em>
+                                <em>{{ __('app.no_groups_yet') }}</em>
                             </div>
                         </div>
                     </div>
@@ -492,13 +492,13 @@
                         <div class="form-check" style="margin: 0;">
                             <input type="checkbox" id="deliverWork" class="form-check-input" name="deliver_work">
                             <label for="deliverWork" class="form-check-label">
-                                I want to deliver my work
+                                {{ __('app.i_want_to_deliver') }}
                             </label>
                         </div>
 
                         <div class="action-btn">
                             <a href="#" id="add-file" class="btn px-15 btn-primary" style="color:white;">
-                                <i class="las la-plus fs-16"></i> Add new file
+                                <i class="las la-plus fs-16"></i> {{ __('app.add_new_file') }}
                             </a>
                         </div>
                     </div>
@@ -514,13 +514,11 @@
 
                                     <div class="card-header py-20">
                                         <h6>
-                                            Uploaded file
+                                            {{ __('app.uploaded') }}
                                         </h6>
 
-                                        <button type="button"
-                                                class="btn btn-sm btn-outline-danger btn-remove-upload"
-                                                style="float:right;">
-                                            Remove
+                                        <button type="button" class="btn btn-sm btn-outline-danger btn-remove-upload" style="float:right;">
+                                            {{ __('app.remove') }}
                                         </button>
                                     </div>
 
@@ -557,7 +555,7 @@
                                             <button type="button"
                                                     class="btn btn-sm btn-outline-danger btn-remove-upload"
                                                     style="float:right;">
-                                                Remove
+                                                {{ __('app.remove') }}
                                             </button>
                                         </div>
 
@@ -595,9 +593,9 @@
                     <input type="hidden" name="payload" id="payload" value=""/>
 
                     <div class="work-actions" style="display: flex; gap: 10px;">
-                        <button type="submit" class="btn btn-primary" name="action" value="finish" id="btn-finish">Finish</button>
+                        <button type="submit" class="btn btn-primary" name="action" value="finish" id="btn-finish">{{ __('app.finish') }}</button>
 
-                        <button type="submit" class="btn btn-primary" name="action" value="draft" id="btn-draft">Save as draft</button>
+                        <button type="submit" class="btn btn-primary" name="action" value="draft" id="btn-draft">{{ __('app.draft') }}</button>
                     </div>
 
                 </div>

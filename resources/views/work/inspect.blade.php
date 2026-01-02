@@ -27,7 +27,7 @@
                         </div>
                         <div class="action-btn" style="color: white;">
                             <a href="{{ route('work.download', $work_order->id) }}" class="btn btn-primary" style = "color: white;">
-                                Download files
+                                {{ __('app.download_files') }}
                             </a>
                         </div>
                     </div>
@@ -48,10 +48,10 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Type</th>
-                                <th>Material</th>
-                                <th>Teeth</th>
-                                <th>Parameters</th>
+                                <th>{{ __('app.type') }}</th>
+                                <th>{{ __('app.material') }}</th>
+                                <th>{{ __('app.teeth') }}</th>
+                                <th>{{ __('app.parameters') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -110,7 +110,7 @@
             @if(auth()->user()->role == 1 || auth()->user()->role == 'admin')
                 <div class="card card-default card-md mb-4">
                     <div class="card-header  py-20">
-                        <h6>Select Status</h6>
+                        <h6>{{ __('app.select_status') }}</h6>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('admin.work.changestatus', $work_order->id) }}">
@@ -120,12 +120,13 @@
 
                                     <select name="status" id="statuses" class="form-control  form-control-lg">
                                         @foreach($statuses as $status)
-                                            <option value="{{ $status->id }}" @if($status->id == $work_order->status->id) selected @endif>{{ $status->name }}</option>
+                                            {{var_dump($status) }}
+                                            <option value="{{ $status->id }}" @if($status->id == $work_order->status->id) selected @endif>{{ $status->translated_name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-                            <button class="btn btn-primary btn-lg btn-squared btn-shadow-primary fw-400 mt-3">Change status</button>
+                            <button class="btn btn-primary btn-lg btn-squared btn-shadow-primary fw-400 mt-3">{{ __('app.change_status') }}</button>
                         </form>
                     </div>
                 </div>
@@ -133,7 +134,7 @@
 
             <div class="card card-default card-md mb-4">
                 <div class="card-header py-20">
-                    <h6>Comments</h6>
+                    <h6>{{ __('app.comments') }}</h6>
                 </div>
                 <div class="card-body pb-10">
 
@@ -153,7 +154,7 @@
                             </div>
                         </div>
                     @empty
-                        <p>No comments yet.</p>
+                        <p>{{ __('app.no_comments') }}</p>
                     @endforelse
 
 
@@ -170,7 +171,7 @@
                                     <div class="row">
                                         <div class="form-group col-12">
                                             <textarea class="form-control mb-4" name="comment" id="comment"></textarea>
-                                            <button type="submit" class="btn btn-primary btn-lg btn-squared btn-shadow-primary fw-400">Add Comment</button>
+                                            <button type="submit" class="btn btn-primary btn-lg btn-squared btn-shadow-primary fw-400">{{ __('app.add_comment') }}</button>
                                         </div>
                                     </div>
                                 </form>
