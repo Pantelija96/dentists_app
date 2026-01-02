@@ -16,43 +16,43 @@
                         <div class="adv-table-table global-shadow border-light-0 w-100 adv-table">
                             <div class="table-responsive">
                                 <div class="adv-table-table__header">
-                                    <h4>{{ \Illuminate\Support\Facades\Auth::user()->first_name }}'s  work orders dashboard</h4>
+                                    <h4>{{ \Illuminate\Support\Facades\Auth::user()->first_name }} - {{ __('app.work_orders_dashboard') }}  </h4>
                                     <div class="adv-table-table__button" style="display: flex;">
                                         <div class="action-btn">
                                             <a href="{{ route('work.show.addNew') }}" class="btn px-15 btn-primary" style="color: #fff;">
-                                                <i class="las la-plus fs-16"></i>Add work</a>
+                                                <i class="las la-plus fs-16"></i>{{ __('app.add_work') }}</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="filter-form-container" id="filter-form-work-orders"></div>
                                 <table id="work-orders-table" class="table mb-0 table-borderless adv-table" data-sorting="true" data-filter-container="#filter-form-work-orders" data-paging-current="1" data-paging-position="right" data-paging-size="10">
-                                <thead>
-                                    <tr class="userDatatable-header">
-                                        <th>
-                                            <span class="userDatatable-title">id</span>
-                                        </th>
-                                        <th>
-                                            <span class="userDatatable-title">user</span>
-                                        </th>
-                                        <th>
-                                            <span class="userDatatable-title">emaill</span>
-                                        </th>
-                                        <th>
-                                            <span class="userDatatable-title">work name</span>
-                                        </th>
-                                        <th>
-                                            <span class="userDatatable-title">files</span>
-                                        </th>
-                                        <th>
-                                            <span class="userDatatable-title">date</span>
-                                        </th>
-                                        <th data-type="html" data-name='status'>
-                                            <span class="userDatatable-title">status</span>
-                                        </th>
-                                        <th>
-                                            <span class="userDatatable-title float-end">action</span>
-                                        </th>
-                                    </tr>
+                                    <thead>
+                                        <tr class="userDatatable-header">
+                                    <th>
+                                        <span class="userDatatable-title">id</span>
+                                    </th>
+                                    <th>
+                                        <span class="userDatatable-title">{{ __('app.user') }}</span>
+                                    </th>
+                                    <th>
+                                        <span class="userDatatable-title">emaill</span>
+                                    </th>
+                                    <th>
+                                        <span class="userDatatable-title">{{ __('app.work_name') }}</span>
+                                    </th>
+                                    <th>
+                                        <span class="userDatatable-title">{{ __('app.files') }}</span>
+                                    </th>
+                                    <th>
+                                        <span class="userDatatable-title">{{ __('app.date') }}</span>
+                                    </th>
+                                    <th data-type="html" data-name='status'>
+                                        <span class="userDatatable-title">status</span>
+                                    </th>
+                                    <th>
+                                        <span class="userDatatable-title float-end">{{ __('app.action') }}</span>
+                                    </th>
+                                </tr>
                                     </thead>
                                     <tbody>
                                     @forelse($work_orders as $work_order)
@@ -81,36 +81,36 @@
                                             </td>
                                             <td>
                                                 <div class="userDatatable-content">
-                                                    <a href="{{ route('work.download', $work_order->id) }}">Link to files</a>
+                                                    <a href="{{ route('work.download', $work_order->id) }}">{{ __('app.link') }}</a>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="userDatatable-content">
-                                                    {{ $work_order->created_at->format('F d, Y @ H:i') }}
+                                                    {{ $work_order->created_at->translatedFormat('F d, Y @ H:i') }}
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="userDatatable-content d-inline-block">
                                                     <span class="rounded-pill userDatatable-content-status active" style="background-color: {{ $work_order->status->color ?? '#ccc' }}; color: #000;">
-                                                        {{ $work_order->status->name ?? 'Unknown' }}
+                                                        {{ $work_order->status->translated_name ?? 'Unknown' }}
                                                     </span>
                                                 </div>
                                             </td>
                                             <td>
                                                 <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                     <li>
-                                                        <a href="{{ route('work.inspect', $work_order->id) }}" class="view" title = "Inspect work">
+                                                        <a href="{{ route('work.inspect', $work_order->id) }}" class="view" title = "{{ __('app.inspect') }}">
                                                             <i class="uil uil-eye"></i>
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ route('work.edit', $work_order->id) }}" class="view" title = "Edit work">
+                                                        <a href="{{ route('work.edit', $work_order->id) }}" class="view" title = "{{ __('app.edit') }}">
                                                             <i class="uil uil-pen"></i>
                                                         </a>
                                                     </li>
 
                                                     <li>
-                                                        <a href="{{ route('work.remove', $work_order->id) }}" class="view" title = "Delete work">
+                                                        <a href="{{ route('work.remove', $work_order->id) }}" class="view" title = "{{ __('app.delete_work_order') }}">
                                                             <i class="uil uil-trash-alt"></i>
                                                         </a>
                                                     </li>
@@ -119,7 +119,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="text-center">No work orders made yet.</td>
+                                            <td colspan="7" class="text-center"> {{ __('app.no_work_orders') }}</td>
                                         </tr>
                                     @endforelse
                                     </tbody>
@@ -138,7 +138,7 @@
                         <div class="adv-table-table global-shadow border-light-0 w-100 adv-table">
                             <div class="table-responsive">
                                 <div class="adv-table-table__header">
-                                    <h4>{{ \Illuminate\Support\Facades\Auth::user()->first_name }}'s  Pending registrations dashboard</h4>
+                                    <h4>{{ \Illuminate\Support\Facades\Auth::user()->first_name }} - {{ __('app.pending_dashboard') }}</h4>
                                 </div>
                                 <div class="filter-form-container" id="filter-form-container-pending"></div>
                                 <table id="pending-registrations-table" class="table mb-0 table-borderless adv-table" data-sorting="true" data-filter-container="#filter-form-container-pending" data-paging-current="1" data-paging-position="right" data-paging-size="10">
@@ -148,19 +148,19 @@
                                             <span class="userDatatable-title">id</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">Full name</span>
+                                            <span class="userDatatable-title">{{ __('app.full_name') }}</span>
                                         </th>
                                         <th>
                                             <span class="userDatatable-title">emaill</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">Current status</span>
+                                            <span class="userDatatable-title">status</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">date of registration</span>
+                                            <span class="userDatatable-title">{{ __('app.date_of_registration') }}</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title float-end">action</span>
+                                            <span class="userDatatable-title float-end">{{ __('app.action') }}</span>
                                         </th>
                                     </tr>
                                     </thead>
@@ -185,10 +185,10 @@
                                                     {{ $pending->email }}
                                                 </div>
                                             </td>
-                                            <td data-name="status">
+                                            <td>
                                                 <div class="userDatatable-content d-inline-block">
-                                                    <span class="bg-opacity-success color-success rounded-pill userDatatable-content-status active">
-                                                        {{ $pending->registrationRequests->getStatus()  }}
+                                                    <span class="rounded-pill userDatatable-content-status active" style="background-color: {{ $work_order->status->color ?? '#ccc' }}; color: #000;">
+                                                        {{ $work_order->status->name ?? 'Unknown' }}
                                                     </span>
                                                 </div>
                                             </td>
@@ -200,17 +200,17 @@
                                             <td>
                                                 <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                     <li>
-                                                        <a href="{{ route('admin.users.approve', $pending->id) }}" class="view" title = "Approve">
+                                                        <a href="{{ route('admin.users.approve', $pending->id) }}" class="view" title = "{{ __('app.approve') }}">
                                                             <i class="uil uil-check"></i>
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ route('admin.users.deny', $pending->id) }}" class="edit" title = "Deny">
+                                                        <a href="{{ route('admin.users.deny', $pending->id) }}" class="edit" title = "{{ __('app.deny') }}">
                                                             <i class="uil uil-times-circle"></i>
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ route('admin.users.delete', $pending->id) }}" class="remove" title = "Delete">
+                                                        <a href="{{ route('admin.users.delete', $pending->id) }}" class="remove" title = "{{ __('app.delete') }}">
                                                             <i class="uil uil-trash-alt"></i>
                                                         </a>
                                                     </li>
@@ -235,7 +235,7 @@
 
 @section('additionalPageJS')
     <script>
-        window.statusesFromDB = @json($statuses);
+        window.statusesFromDB = @json($statusesForJs);
     </script>
     <script src="{{ asset('assets/scripts/admin-dashboard.js') }}"></script>
 @endsection

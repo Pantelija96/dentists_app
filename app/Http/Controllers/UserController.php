@@ -20,6 +20,12 @@ class UserController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
         $this->data['statuses'] = WorkOrderStatus::all();
+        $this->data['statusesForJs'] = WorkOrderStatus::all()->map(fn ($status) => [
+            'id'    => $status->id,
+            'name'  => $status->name,
+            'color' => $status->color,
+            'traslation' => $status->translated_name
+        ]);
         return view('user.dashboard', $this->data);
     }
 

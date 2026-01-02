@@ -33,20 +33,7 @@ class WorkController extends Controller
                 'role' => 'user'
             ])->get();
         }
-        if (auth()->user()->number_of_notifications > 0) {
-            if(auth()->user()->role == 'user') {
-                $this->data['notifications'] = Notification::where('user_id', auth()->user()->id)
-                    ->latest()
-                    ->limit(auth()->user()->number_of_notifications)
-                    ->get();
-            }
-            else{
-                $this->data['notifications'] = Notification::where('region_id', auth()->user()->region_id)
-                    ->latest()
-                    ->limit(auth()->user()->number_of_notifications)
-                    ->get();
-            }
-        }
+//        return dd($this->data);
         return view('work.addNew', $this->data);
     }
 

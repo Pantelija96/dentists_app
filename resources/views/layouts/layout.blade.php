@@ -56,10 +56,10 @@
         <div class="navbar-right">
             <ul class="navbar-right__menu">
                 <li class="">
-                    <a href="#" class="il-light-gray" style="margin-right: 5px;" id="nav-links">About Us</a>
+                    <a href="#" class="il-light-gray" style="margin-right: 5px;" id="nav-links">{{ __('app.about') }}</a>
                 </li>
                 <li class="">
-                    <a href="#" class="il-light-gray" style="margin-right: 5px;" id="nav-links">Our Services</a>
+                    <a href="#" class="il-light-gray" style="margin-right: 5px;" id="nav-links">{{ __('app.our_services') }}</a>
                 </li>
                 @if(auth()->user()->role == 'super_admin')
                     <li>
@@ -82,12 +82,12 @@
                 @endif
                 @if(auth()->user()->role == 'user')
                     <li class="">
-                        <a href="{{route('user.dashboard')}}" class="il-light-gray" style="margin-right: 5px;" id="nav-links">My Dashboard</a>
+                        <a href="{{route('user.dashboard')}}" class="il-light-gray" style="margin-right: 5px;" id="nav-links">{{ __('app.dashboard') }}</a>
                     </li>
                 @endif
                 @if(auth()->user()->role == 'admin')
                     <li class="">
-                        <a href="{{route('admin.dashboard')}}" class="il-light-gray" style="margin-right: 5px;" id="nav-links">My Dashboard</a>
+                        <a href="{{route('admin.dashboard')}}" class="il-light-gray" style="margin-right: 5px;" id="nav-links">{{ __('app.dashboard') }}</a>
                     </li>
                 @endif
                 <li class="nav-notification">
@@ -102,9 +102,9 @@
                         <div class="dropdown-parent-wrapper">
                             <div class="dropdown-wrapper">
                                 <h2 class="dropdown-wrapper__title">
-                                    Notifications @if($notificationsCount > 0) <span class="badge-circle badge-warning ms-1"> {{ $notificationsCount }} </span> @endif
+                                    {{ __('app.notifications') }} @if($notificationsCount > 0) <span class="badge-circle badge-warning ms-1"> {{ $notificationsCount }} </span> @endif
                                     <a href="" class="view" title = "Mark all as read"><i class="uil uil-check"></i></a>
-                                </h2>                               
+                                </h2>
                                 <ul>
                                     @forelse($notifications as $notification)
                                         <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
@@ -123,7 +123,7 @@
                                         </li>
                                     @empty
                                         <p class="text-muted text-center mt-3">
-                                            No new notifications
+                                            {{ __('app.no_notifications') }}
                                         </p>
                                     @endforelse
                                 </ul>
@@ -140,12 +140,12 @@
                 <!-- ends: .nav-support -->
                 <li class="nav-flag-select">
                     <div class="dropdown-custom">
-                        <a href="javascript:;" class="nav-item-toggle"><img src="{{ asset('assets/img/flag.png')}}" alt="" class="rounded-circle"></a>
+                        <a href="javascript:;" class="nav-item-toggle"><img src="@if(session('locale') == 'en') {{ asset('assets/img/eng.png')}} @elseif(session('locale') == 'sr') {{ asset('assets/Slike/ikonice/serbia.png')}} @elseif(session('locale') == 'cr') {{ asset('assets/Slike/ikonice/croatia.png')}} @else {{ asset('assets/img/eng.png')}} @endif" alt="" class="rounded-circle"></a>
                         <div class="dropdown-parent-wrapper">
                             <div class="dropdown-wrapper dropdown-wrapper--small">
-                                <a href=""><img src="{{ asset('assets/img/eng.png')}}" alt=""> English</a>
-                                <a href=""><img src="{{ asset('assets/Slike/ikonice/serbia.png')}}" alt=""> Serbian</a>
-                                <a href=""><img src="{{ asset('assets/Slike/ikonice/croatia.png')}}" alt=""> Croatian</a>
+                                <a href="{{ url('lang/en') }}"><img src="{{ asset('assets/img/eng.png')}}" alt=""> English</a>
+                                <a href="{{ url('lang/sr') }}"><img src="{{ asset('assets/Slike/ikonice/serbia.png')}}" alt=""> Serbian</a>
+                                <a href="{{ url('lang/cr') }}"><img src="{{ asset('assets/Slike/ikonice/croatia.png')}}" alt=""> Croatian</a>
                             </div>
                         </div>
 
@@ -172,7 +172,7 @@
                                     <ul>
                                         <li>
                                             <a href="@if(auth()->user()->role == 'admin' || auth()->user()->role == 'super-admin') {{ route('admin.dashboard') }} @else {{ route('user.dashboard') }} @endif">
-                                                <i class="uil uil-dashboard"></i> My Dashboard</a>
+                                                <i class="uil uil-dashboard"></i> {{ __('app.dashboard') }}</a>
                                         </li>
                                         {{--                                                <li style="display: none;">--}}
                                         {{--                                                    <a href="">--}}
@@ -184,7 +184,7 @@
                                         {{--                                                </li>--}}
                                     </ul>
                                     <a href="{{ route('logout') }}" class="nav-author__signout">
-                                        <i class="uil uil-sign-out-alt"></i> Log Out</a>
+                                        <i class="uil uil-sign-out-alt"></i> Log Out </a>
                                 </div>
                             </div>
                             <!-- ends: .dropdown-wrapper -->

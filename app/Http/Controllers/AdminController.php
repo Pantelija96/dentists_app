@@ -28,6 +28,12 @@ class AdminController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
         $this->data['statuses'] = WorkOrderStatus::all();
+        $this->data['statusesForJs'] = WorkOrderStatus::all()->map(fn ($status) => [
+            'id'    => $status->id,
+            'name'  => $status->name,
+            'color' => $status->color,
+            'traslation' => $status->translated_name
+        ]);
 
         return view('admin.dashboard', $this->data);
     }
@@ -44,6 +50,12 @@ class AdminController extends Controller
             ->get();
         $this->data['statuses'] = WorkOrderStatus::all();
         $this->data['target_user'] = User::where('id', $id)->first();
+        $this->data['statusesForJs'] = WorkOrderStatus::all()->map(fn ($status) => [
+            'id'    => $status->id,
+            'name'  => $status->name,
+            'color' => $status->color,
+            'traslation' => $status->translated_name
+        ]);
 
         return view('admin.user-work-orders', $this->data);
     }
