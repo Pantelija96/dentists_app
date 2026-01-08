@@ -389,7 +389,7 @@
                     @endif
 
                     <div class="form-group">
-                        <label for="work_name">{{ __('app.work_name') }}</label>
+                        <label for="work_name">{{ __('app.work_name') }}<span class="text-danger">*</span></label>
                         <input type="text" class="form-control" style="height: 3rem;" placeholder="Type name of work here" id="work_name" name="work_name" value="{{ $work->name }}">
                     </div>
 

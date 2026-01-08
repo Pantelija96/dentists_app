@@ -116,7 +116,7 @@
 
         <!-- Desna kolona - kartica sa slikom -->
         <div class="dental-hero-visual">
-            <div class="dental-hero-card">
+            <div class="dental-hero-card" style="opacity: 0;">
                 <img src="{{ asset('assets/Slike/hero-video.png') }}" alt="Dental 3D model" />
             </div>
         </div>

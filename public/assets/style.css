@@ -152,7 +152,6 @@ NB: this file contains the list of components/scss partial along with the style.
 .dental-hero {
     position: relative;
     padding: 70px 40px 0px 40px;
-    border-radius: 12px;
     overflow: hidden;
     height: 100vh;
 
@@ -161,7 +160,10 @@ NB: this file contains the list of components/scss partial along with the style.
     justify-content: center;
 
     /* koristi temu umesto fiksne boje */
-    background: var(--bg-primary);
+    /* background: var(--bg-primary); */
+    background: url("Slike/admin-bg-light.png");
+    background-repeat: no-repeat;
+    background-position: top;
     color: var(--color-dark-text);
 }
 
@@ -170,7 +172,8 @@ NB: this file contains the list of components/scss partial along with the style.
     content: "";
     position: absolute;
     inset: 0;
-    background: url("Slike/hero-image.png") center/cover no-repeat;
+    /* background: url("Slike/hero-image.png") center/cover no-repeat; */
+    background: var(--bg-primary);
     opacity: 0.40; /* slabije da dark mode ostane vidljiv */
     z-index: 0;
 }
@@ -467,6 +470,9 @@ polygon:hover, polygon:active, path:hover, path:active{
 }
 }
 
+#adult-outlines {
+    pointer-events: none;
+}
 
 .lbl{
     fill: var(--color-gray) !important;
@@ -480,6 +486,10 @@ polygon:hover, polygon:active, path:hover, path:active{
 .dropdown-disabled {
     pointer-events: none;
     opacity: 0.5;
+}
+
+.my-toast-margin {
+    margin-top: 80px; /* Podesite vrednost po potrebi */
 }
 
 /* RESPONSIVE – na mobilnom sve u jednu kolonu */
@@ -11383,6 +11393,7 @@ body.top-menu .navbar-left .customizer-trigger + .top-menu {
 
 .table > :not(:last-child) > :last-child > * {
     border-bottom-color: var(--border-color);
+    font-size: 20px;
 }
 
 .table > tbody {
@@ -28118,6 +28129,7 @@ body:after {
 }
 .layout-dark .table > :not(:last-child) > :last-child > * {
     border-bottom-color: var(--border-color);
+    font-size: 20px;
 }
 .layout-dark table.table-rounded tbody tr td {
     background-color: transparent;
