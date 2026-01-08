@@ -53,6 +53,9 @@
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
+                customClass: {
+                    popup: 'my-toast-margin' // Dodeljujemo klasu
+                },
                 showConfirmButton: false,
                 timer: 5000,
                 timerProgressBar: true,
