@@ -140,12 +140,19 @@
                 <!-- ends: .nav-support -->
                 <li class="nav-flag-select">
                     <div class="dropdown-custom">
-                        <a href="javascript:;" class="nav-item-toggle"><img src="@if(session('locale') == 'en') {{ asset('assets/img/eng.png')}} @elseif(session('locale') == 'sr') {{ asset('assets/Slike/ikonice/serbia.png')}} @elseif(session('locale') == 'cr') {{ asset('assets/Slike/ikonice/croatia.png')}} @else {{ asset('assets/img/eng.png')}} @endif" alt="" class="rounded-circle"></a>
+                        <a href="javascript:;" class="nav-item-toggle"><img src="
+                            @if(session('locale') == 'en' || Auth::user()->language == 'en') {{ asset('assets/img/eng.png')}}
+                            @elseif(session('locale') == 'sr' || Auth::user()->language == 'sr') {{ asset('assets/Slike/ikonice/serbia.png')}}
+                            @elseif(session('locale') == 'cr' || Auth::user()->language == 'cr') {{ asset('assets/Slike/ikonice/croatia.png')}}
+                            @else {{ asset('assets/img/eng.png')}} @endif" alt="" class="rounded-circle"></a>
                         <div class="dropdown-parent-wrapper">
                             <div class="dropdown-wrapper dropdown-wrapper--small">
                                 <a href="{{ url('lang/en') }}"><img src="{{ asset('assets/img/eng.png')}}" alt=""> English</a>
-                                <a href="{{ url('lang/sr') }}"><img src="{{ asset('assets/Slike/ikonice/serbia.png')}}" alt=""> Serbian</a>
-                                <a href="{{ url('lang/cr') }}"><img src="{{ asset('assets/Slike/ikonice/croatia.png')}}" alt=""> Croatian</a>
+                                @if(Auth::user()->language == 'sr')
+                                    <a href="{{ url('lang/sr') }}"><img src="{{ asset('assets/Slike/ikonice/serbia.png')}}" alt=""> Serbian</a>
+                                @elseif(Auth::user()->language == 'cr')
+                                    <a href="{{ url('lang/cr') }}"><img src="{{ asset('assets/Slike/ikonice/croatia.png')}}" alt=""> Croatian</a>
+                                @endif
                             </div>
                         </div>
 
