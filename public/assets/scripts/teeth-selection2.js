@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 : "#FFFFFF";
 
             if (state.selection.has(key)) {
-                el.style.fill = "#B0B0B0";
+                el.style.fill = "#5c595a";
                 el.style.stroke = "#000";
                 el.style.strokeWidth = "2px";
             } else {
