@@ -5597,8 +5597,8 @@ body.top-menu .navbar-left .customizer-trigger + .top-menu {
 }
 
 .header-top .navbar-right__menu .nav-notification .nav-item-toggle svg, .header-top .navbar-right__menu .nav-notification .nav-item-toggle img {
-    -webkit-animation: ring 2s ease infinite;
-    animation: ring 2s ease infinite;
+    /* -webkit-animation: ring 2s ease infinite;
+    animation: ring 2s ease infinite; */
 }
 .header-top .navbar-right__menu .nav-notification .nav-item-toggle:after, .header-top .navbar-right__menu .nav-notification .nav-item-toggle:before {
     z-index: 1;
