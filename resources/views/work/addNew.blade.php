@@ -396,7 +396,7 @@
 
                     <div class="form-group">
                         <label for="work_name">{{ __('app.work_name') }}<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" style="height: 3rem;" placeholder="{{ __('app.work_name') }}" id="work_name" name="work_name">
+                        <input type="text" class="form-control" style="height: 3rem;" placeholder="{{ __('app.work_name') }}" id="work_name" name="work_name" required>
                     </div>
 
                     <input type="hidden" name="groups_payload" id="groups_payload">
@@ -576,6 +576,8 @@
                             <button type="submit" class="btn btn-primary" name="action" value="finish" id="btn-finish">{{ __('app.finish') }}</button>
 
                             <button type="submit" class="btn btn-primary" name="action" value="draft" id="btn-draft">{{ __('app.draft') }}</button>
+
+                            <a href="{{ url()->previous() }}" class="btn btn-danger text-white">{{ __('app.cancel') }}</a>
                         </div>
 
                 </div>

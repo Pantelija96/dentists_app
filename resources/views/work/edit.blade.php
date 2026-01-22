@@ -596,6 +596,8 @@
                         <button type="submit" class="btn btn-primary" name="action" value="finish" id="btn-finish">{{ __('app.finish') }}</button>
 
                         <button type="submit" class="btn btn-primary" name="action" value="draft" id="btn-draft">{{ __('app.draft') }}</button>
+
+                        <a href="{{ url()->previous() }}" class="btn btn-danger text-white">{{ __('app.cancel') }}</a>
                     </div>
 
                 </div>

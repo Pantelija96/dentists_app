@@ -161,14 +161,14 @@ document.addEventListener("DOMContentLoaded", () => {
      * GROUP APPLY / CLEAR
      * ============================================================ */
     DOM.clearBtn?.addEventListener("click", () => {
-        state.groups = [];
-        state.toothToGroup.clear();
-        resetSelection();
-        updateTeethVisuals();
-        renderGroupsPreview();
-    });
+            state.groups = [];
+            state.toothToGroup.clear();
+            resetSelection();
+            updateTeethVisuals();
+            renderGroupsPreview();
+        });
 
-    DOM.applyBtn?.addEventListener("click", () => {
+        DOM.applyBtn?.addEventListener("click", () => {
         if (!state.selection.size) {
             alert("Select at least one tooth.");
             return;
@@ -187,18 +187,37 @@ document.addEventListener("DOMContentLoaded", () => {
         const materialId = materialRadio.value;
         const materialLabel = materialRadio.dataset.label;
 
-        // update hidden selects
-        DOM.typeSelectHidden.val(typeId).trigger('change');
-        DOM.materialSelectHidden.val(materialId).trigger('change');
-
-        const color = COLORS[state.groups.length % COLORS.length];
-        const groupId = crypto.randomUUID();
         const teeth = [...state.selection];
-
+        const groupId = crypto.randomUUID();
+        const color = COLORS[state.groups.length % COLORS.length];
         const parameters = JSON.parse(DOM.payloadInput.val() || "{}");
 
-        teeth.forEach(t => state.toothToGroup.set(t, groupId));
+        /* --- LOGIKA ZA OVERWRITE --- */
+        
+        teeth.forEach(toothKey => {
+            // Proveravamo da li zub pripada nekoj grupi
+            const oldGroupId = state.toothToGroup.get(toothKey);
+            
+            if (oldGroupId) {
+                // Pronalazimo staru grupu
+                const oldGroupIndex = state.groups.findIndex(g => g.id === oldGroupId);
+                
+                if (oldGroupIndex !== -1) {
+                    // Uklanjamo taj zub iz niza stare grupe
+                    state.groups[oldGroupIndex].teeth = state.groups[oldGroupIndex].teeth.filter(t => t !== toothKey);
+                    
+                    // Edge case: ako grupa ostane bez zuba, uklanjamo je
+                    if (state.groups[oldGroupIndex].teeth.length === 0) {
+                        state.groups.splice(oldGroupIndex, 1);
+                    }
+                }
+            }
+            
+            // Mapiramo zub na novu grupu
+            state.toothToGroup.set(toothKey, groupId);
+        });
 
+        /* --- DODAVANJE NOVE GRUPE --- */
         state.groups.push({
             id: groupId,
             color,
@@ -210,7 +229,11 @@ document.addEventListener("DOMContentLoaded", () => {
             parameters
         });
 
-        DOM.payloadInput.val(""); // clear payload
+        // Update
+        DOM.typeSelectHidden.val(typeId).trigger('change');
+        DOM.materialSelectHidden.val(materialId).trigger('change');
+        DOM.payloadInput.val(""); 
+        
         resetSelection();
         updateTeethVisuals();
         renderGroupsPreview();
