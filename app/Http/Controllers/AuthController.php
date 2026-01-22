@@ -27,21 +27,31 @@ class AuthController extends Controller
             'email' => ['required','email'],
             'password' => ['required'],
         ]);
+
         $remember = $request->boolean('remember');
 
         if (!Auth::attempt($credentials, $remember)) {
             return back()->with(['error' => 'Invalid credentials']);
         }
 
+        $request->session()->regenerate();
+
         $user = auth()->user();
         $user->update(['last_login' => now()]);
 
         if (!$user->is_approved) {
             Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
             return back()->with(['error' => 'Your account is not approved yet']);
         }
 
-        return redirect()->route( $user->role === 'admin' || $user->role === 'super_admin' ? 'admin.dashboard' : 'user.dashboard' );
+        return redirect()->route(
+            in_array($user->role, ['admin','super_admin'])
+                ? 'admin.dashboard'
+                : 'user.dashboard'
+        );
     }
 
     public function showSignUp()
