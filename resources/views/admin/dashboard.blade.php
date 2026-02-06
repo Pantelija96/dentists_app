@@ -145,13 +145,13 @@
                                 <thead>
                                     <tr class="userDatatable-header">
                                         <th>
-                                            <span class="userDatatable-title">id</span>
+                                            <span class="userDatatable-title">ID</span>
                                         </th>
                                         <th>
                                             <span class="userDatatable-title">{{ __('app.full_name') }}</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">emaill</span>
+                                            <span class="userDatatable-title">email</span>
                                         </th>
                                         <th>
                                             <span class="userDatatable-title">status</span>
