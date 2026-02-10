@@ -166,7 +166,7 @@
                                     </thead>
                                     <tbody>
 
-                                    @foreach($pendingRegistration as $pending)
+                                    @forelse($pendingRegistration as $pending)
                                         <tr data-status="{{ $pending->registrationRequests->getStatus() }}">
                                             <td>
                                                 <div class="userDatatable-content">{{ $pending->id }}</div>
@@ -217,7 +217,11 @@
                                                 </ul>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center"> {{ __('app.no_pending_users') }}</td>
+                                        </tr>                                      
+                                    @endforelse
                                     </tbody>
                                 </table>
                             </div>

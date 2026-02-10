@@ -103,7 +103,7 @@
                             <div class="dropdown-wrapper">
                                 <h2 class="dropdown-wrapper__title">
                                     {{ __('app.notifications') }} @if($notificationsCount > 0) <span class="badge-circle badge-warning ms-1"> {{ $notificationsCount }} </span> @endif
-                                    <a href="" class="view" title = "Mark all as read"><i class="uil uil-check"></i></a>
+                                    <a href="" class="view" title = "{{ __('app.mark_all_as_read') }}"><i class="uil uil-check"></i></a>
                                 </h2>
                                 <ul>
                                     @forelse($notifications as $notification)
@@ -191,7 +191,7 @@
                                         {{--                                                </li>--}}
                                     </ul>
                                     <a href="{{ route('logout') }}" class="nav-author__signout">
-                                        <i class="uil uil-sign-out-alt"></i> Log Out </a>
+                                        <i class="uil uil-sign-out-alt"></i> {{ __('app.logout') }} </a>
                                 </div>
                             </div>
                             <!-- ends: .dropdown-wrapper -->

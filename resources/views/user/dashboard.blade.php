@@ -26,7 +26,7 @@
                                     </div>
                                 </div>
                                 <div id="filter-form-container"></div>
-                                <table class="table mb-0 table-borderless adv-table" data-sorting="true" data-filter-container="#filter-form-container" data-paging-current="1" data-paging-position="right" data-paging-size="10">
+                                <table id="user-work-orders-table" class="table mb-0 table-borderless adv-table" data-sorting="true" data-filter-container="#filter-form-container" data-paging-current="1" data-paging-position="right" data-paging-size="10">
                                     <thead>
                                     <tr class="userDatatable-header">
                                         <th>
@@ -151,7 +151,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center">{{ __('app.no_work_orders') }}</td>
+                                            <td colspan="9" class="text-center">{{ __('app.no_work_orders') }}</td>
                                         </tr>
                                     @endforelse
                                     </tbody>

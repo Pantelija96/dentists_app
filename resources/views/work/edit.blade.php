@@ -10,6 +10,23 @@
     <script>
         window.workTypes = @json($work_types);
     </script>
+    <script>
+        window.translations = {
+            upload_file: "{{ __('app.upload_file') }}",
+            no_parameters_combination: "{{ __('app.no_parameters_combination') }}",
+            please_select_work_and_material: "{{ __('app.please_select_work_and_material') }}",
+            select: "{{ __('app.select') }}",
+            no_materials: "{{ __('app.no_materials') }}",
+            type: "{{ __('app.type') }}",
+            material: "{{ __('app.material') }}",
+            teeth: "{{ __('app.teeth') }}",
+            parameters: "{{ __('app.parameters') }}",
+            color: "{{ __('app.color') }}",
+            edit_teeth: "{{ __('app.edit_teeth') }}",
+            no_groups: "{{ __('app.no_groups') }}",
+            select_at_least_one_tooth: "{{ __('app.select_at_least_one_tooth') }}",
+        };
+    </script>
 @endsection
 
 @section('content')
@@ -390,7 +407,7 @@
 
                     <div class="form-group">
                         <label for="work_name">{{ __('app.work_name') }}<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" style="height: 3rem;" placeholder="Type name of work here" id="work_name" name="work_name" value="{{ $work->name }}">
+                        <input type="text" class="form-control" style="height: 3rem;" placeholder="{{ __('app.type_work_name') }}" id="work_name" name="work_name" value="{{ $work->name }}">
                     </div>
 
                         <input type="hidden" name="groups" id="groups_payload" value="">
@@ -421,7 +438,7 @@
                         </div>
 
                         <div class="form-group select-px-15">
-                            <label>{{ __('app.choose_material') }}:</label>
+                            <label>{{ __('app.choose_material') }}</label>
 
                             <div class="type-of-material" role="group" id="material_radios_container">
                                 <em class="text-muted">{{ __('app.select_work_type') }}</em>
@@ -440,7 +457,7 @@
                                     <div class="modal-content radius-xl">
                                         <div class="modal-header">
                                             <h6 class="modal-title fw-500" id="parametersModalLabel">{{ __('app.select_parameters') }}</h6>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">X</button>
                                         </div>
                                         <div class="modal-body">
                                             <form id="parameters-form">
