@@ -112,15 +112,24 @@ class WorkController extends Controller
             }
 
             if ($request->hasFile('uploads')) {
-                foreach ($request->file('uploads') as $index => $file) {
-                    if (!$file || !$file->isValid()) continue;
+                foreach ($request->file('uploads') as $file) {
+                    if (!$file || !$file->isValid()) {
+                        continue;
+                    }
 
-                    $path = $file->store('work_order_files', 'public');
+                    $extension = strtolower($file->getClientOriginalExtension());
+                    $filename  = uniqid('wo_') . '.' . $extension;
+
+                    $path = $file->storeAs(
+                        'work_order_files',
+                        $filename,
+                        'public'
+                    );
 
                     WorkOrderFile::create([
                         'work_order_id' => $workOrder->id,
-                        'file_type' => $file->extension(),
-                        'file_path' => $path,
+                        'file_type'     => $extension,
+                        'file_path'     => $path,
                         'original_name' => $file->getClientOriginalName(),
                     ]);
                 }
@@ -156,7 +165,7 @@ class WorkController extends Controller
         $files = WorkOrderFile::where('work_order_id', $id)->get();
         $user = auth()->user();
 
-        if ( $workOrder->user_id !== $user->id && $user->role !== 'admin' && $user->role !== 'super-admin')  {
+        if ( (int) $workOrder->user_id !== (int) $user->id && $user->role !== 'admin' && $user->role !== 'super-admin')  {
             return back()->with('error', "You do not have permission to download these files.");
         }
 
@@ -174,12 +183,28 @@ class WorkController extends Controller
         $zip = new \ZipArchive();
         if ($zip->open($zipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
 
+            $existingNames = [];
+
             foreach ($files as $file) {
                 $fullPath = storage_path("app/public/" . $file->file_path);
 
-                if (file_exists($fullPath)) {
-                    $zip->addFile($fullPath, basename($fullPath));
+                if (!file_exists($fullPath)) continue;
+
+                $originalName = $file->original_name;
+                $nameWithoutExt = pathinfo($originalName, PATHINFO_FILENAME);
+                $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+
+                $finalName = $originalName;
+                $counter = 1;
+
+                while (in_array($finalName, $existingNames)) {
+                    $finalName = $nameWithoutExt . '_' . $counter . '.' . $extension;
+                    $counter++;
                 }
+
+                $existingNames[] = $finalName;
+
+                $zip->addFile($fullPath, $finalName);
             }
 
             $zip->close();
