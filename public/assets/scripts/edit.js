@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!DOM.groupsContainer) return;
 
         if (!state.groups.length) {
-            DOM.groupsContainer.innerHTML = "<em>No groups yet.</em>";
+            DOM.groupsContainer.innerHTML = `<em>${window.translations.no_groups}</em>`;
             return;
         }
 
@@ -99,12 +99,12 @@ document.addEventListener("DOMContentLoaded", () => {
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Type</th>
-                    <th>Material</th>
-                    <th>Teeth</th>
-                    <th>Parameters</th>
-                    <th>Color</th>
-                    <th>Edit</th>
+                    <th>${window.translations.type}</th>
+                    <th>${window.translations.material}</th>
+                    <th>${window.translations.teeth}</th>
+                    <th>${window.translations.parameters}</th>
+                    <th>${window.translations.color}</th>
+                    <th>${window.translations.edit_teeth}</th>
                 </tr>
             </thead>
             <tbody>
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <button type="button"
                                 class="btn btn-sm btn-link edit-params"
                                 data-group-id="${g.id}">
-                                Edit
+                                ${window.translations.edit_teeth}
                             </button>
                         </td>
                     </tr>
@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
      * ============================================================ */
     DOM.applyBtn?.addEventListener("click", () => {
         if (!state.selection.size) {
-            alert("Select at least one tooth.");
+            alert(window.translations.select_at_least_one_tooth);
             return;
         }
 
@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const materialRadio = document.querySelector('input[name="material_of_work_radio"]:checked');
 
         if (!typeRadio || !materialRadio) {
-            alert("Please select work type and material.");
+            alert(window.translations.please_select_work_and_material);
             return;
         }
 
@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then(materials => {
                     DOM.materialRadiosContainer.innerHTML = '';
                     if (!materials.length) {
-                        DOM.materialRadiosContainer.innerHTML = '<em class="text-muted">No materials for this type</em>';
+                        DOM.materialRadiosContainer.innerHTML = `<em class="text-muted">${window.translations.no_materials}</em>`;
                         return;
                     }
                     materials.forEach(m => {
@@ -309,7 +309,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const materialRadio = document.querySelector('input[name="material_of_work_radio"]:checked');
 
         if (!typeRadio || !materialRadio) {
-            alert('Please select work type and material first.');
+            alert(`${window.translations.please_select_work_and_material}`);
             return;
         }
 
@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 renderParameters(parameters);
                 $('#parameters-modal select').select2({
                     minimumResultsForSearch: Infinity,
-                    placeholder: "Please select",
+                    placeholder: `${window.translations.select}`,
                     allowClear: true
                 });
                 DOM.parametersModal.modal('show');
@@ -332,7 +332,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderParameters(parameters){
         const container = DOM.parametersContainer;
         container.empty();
-        if(!parameters.length){ container.html('<em>No parameters for this combination.</em>'); return; }
+        if(!parameters.length){ container.html(`<em> ${window.translations.no_parameters_combination} </em>`); return; }
         parameters.forEach(p=>{
             let fieldHTML='';
             switch(p.field_type){
@@ -360,7 +360,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     fieldHTML = `<div class="form-group mb-3">
                         <label for="param_${p.id}">${p.name}</label>
                         <select class="form-control" name="param[${p.id}]" id="param_${p.id}">
-                            <option value="">Select</option>
+                            <option value="">${window.translations.select}</option>
                             ${options}
                         </select>
                     </div>`;
@@ -471,8 +471,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ============================================================
- * UPLOADS — EDIT PAGE (MATCHES EXISTING HTML)
- * ============================================================ */
+    * UPLOADS — EDIT PAGE (MATCHES EXISTING HTML)
+    * ============================================================ */
 
     const uploadsContainer = document.getElementById('uploads-container');
     const addFileBtn = document.getElementById('add-file');

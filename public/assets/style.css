@@ -574,6 +574,30 @@ polygon:hover, polygon:active, path:hover, path:active{
     }
 }
 
+/* DataTable custom styles */
+
+#pending-registrations-table tbody tr td[colspan="6"] {
+    display: table-cell !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+
+/* Sakrivanje ostalih praznih td-ova koje FooTable ubaci u taj red */
+#pending-registrations-table tbody tr td[colspan="6"] ~ td {
+    display: none !important;
+}
+
+#user-work-orders-table tbody tr td[colspan="9"] {
+    display: table-cell !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+
+/* Sakrivanje ostalih praznih td-ova koje FooTable ubaci u taj red */
+#user-work-orders-table tbody tr td[colspan="9"] ~ td {
+    display: none !important;
+}
+
 /* Custom bootstrap classes */
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     color: var(--color-dark);
@@ -11393,7 +11417,7 @@ body.top-menu .navbar-left .customizer-trigger + .top-menu {
 
 .table > :not(:last-child) > :last-child > * {
     border-bottom-color: var(--border-color);
-    font-size: 20px;
+    font-size: 14px;
 }
 
 .table > tbody {

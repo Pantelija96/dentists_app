@@ -10,6 +10,23 @@
     <script>
         window.workTypes = @json($work_types);
     </script>
+    <script>
+        window.translations = {
+            upload_file: "{{ __('app.upload_file') }}",
+            no_parameters_combination: "{{ __('app.no_parameters_combination') }}",
+            please_select_work_and_material: "{{ __('app.please_select_work_and_material') }}",
+            select: "{{ __('app.select') }}",
+            no_materials: "{{ __('app.no_materials') }}",
+            type: "{{ __('app.type') }}",
+            material: "{{ __('app.material') }}",
+            teeth: "{{ __('app.teeth') }}",
+            parameters: "{{ __('app.parameters') }}",
+            color: "{{ __('app.color') }}",
+            edit_teeth: "{{ __('app.edit_teeth') }}",
+            no_groups: "{{ __('app.no_groups') }}",
+            select_at_least_one_tooth: "{{ __('app.select_at_least_one_tooth') }}",
+        };
+    </script>
 @endsection
 
 @section('content')
@@ -396,16 +413,16 @@
 
                     <div class="form-group">
                         <label for="work_name">{{ __('app.work_name') }}<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" style="height: 3rem;" placeholder="{{ __('app.work_name') }}" id="work_name" name="work_name" required>
+                        <input type="text" class="form-control" style="height: 3rem;" placeholder="{{ __('app.type_work_name') }}" title="{{ __('app.please_fill_out') }}" id="work_name" name="work_name" required>
                     </div>
 
                     <input type="hidden" name="groups_payload" id="groups_payload">
                     <input type="hidden" name="parameters_payload" id="parameters_payload">
 
 {{--                    <div class="form-group select-px-15">--}}
-{{--                        <label for="type_of_work">Choose type of work:</label>--}}
+{{--                        <label for="type_of_work">{{ __('app.choose_type_of_work') }}</label>--}}
 {{--                        <select class="form-control px15 select-2" id="type_of_work" name="type_of_work">--}}
-{{--                            <option value="0" disabled selected> Please select </option>--}}
+{{--                            <option value="0" disabled selected> {{ __('app.please_select') }} </option>--}}
 {{--                            @foreach($work_types as $type)--}}
 {{--                                <option value="{{ $type->id }}">{{ $type->name }}</option>--}}
 {{--                            @endforeach--}}
@@ -413,7 +430,7 @@
 {{--                    </div>--}}
 
 {{--                    <div class="form-group select-px-15">--}}
-{{--                        <label for="material_of_work">Choose material:</label>--}}
+{{--                        <label for="material_of_work">{{ __('app.choose_material') }}</label>--}}
 {{--                        <select class="form-control px-15 select-2" id="material_of_work" name="material_of_work">--}}
 {{--                        </select>--}}
 {{--                    </div>--}}
@@ -444,7 +461,7 @@
                         </div>
 
                         <div class="form-group select-px-15">
-                            <label>{{ __('app.choose_material') }}:</label>
+                            <label>{{ __('app.choose_material') }}</label>
 
                             <div class="type-of-material" role="group" id="material_radios_container">
                                 <em class="text-muted">{{ __('app.select_work_type') }}</em>
@@ -463,7 +480,7 @@
                                     <div class="modal-content radius-xl">
                                         <div class="modal-header">
                                             <h6 class="modal-title fw-500" id="parametersModalLabel">{{ __('app.select_parameters') }}</h6>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">X</button>
                                         </div>
                                         <div class="modal-body">
                                             <form id="parameters-form">
@@ -532,7 +549,7 @@
 
                         <div class="card card-default card-md mb-4 upload-card" data-index="1">
                             <div class="card-header py-20">
-                                <h6>Upload file #1</h6>
+                                <h6>{{ __('app.upload_file') }} #1</h6>
                             </div>
 
                             <div class="card-body">
@@ -545,7 +562,7 @@
                                                 <img class="svg"
                                                      src="{{ asset('assets/img/svg/upload.svg') }}"
                                                      alt="upload">
-                                                Click to Upload
+                                                {{ __('app.click_to_upload') }}
                                             </a>
 
                                             <input
