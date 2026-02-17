@@ -193,26 +193,26 @@ document.addEventListener("DOMContentLoaded", () => {
         const parameters = JSON.parse(DOM.payloadInput.val() || "{}");
 
         /* --- LOGIKA ZA OVERWRITE --- */
-        
+
         teeth.forEach(toothKey => {
             // Proveravamo da li zub pripada nekoj grupi
             const oldGroupId = state.toothToGroup.get(toothKey);
-            
+
             if (oldGroupId) {
                 // Pronalazimo staru grupu
                 const oldGroupIndex = state.groups.findIndex(g => g.id === oldGroupId);
-                
+
                 if (oldGroupIndex !== -1) {
                     // Uklanjamo taj zub iz niza stare grupe
                     state.groups[oldGroupIndex].teeth = state.groups[oldGroupIndex].teeth.filter(t => t !== toothKey);
-                    
+
                     // Edge case: ako grupa ostane bez zuba, uklanjamo je
                     if (state.groups[oldGroupIndex].teeth.length === 0) {
                         state.groups.splice(oldGroupIndex, 1);
                     }
                 }
             }
-            
+
             // Mapiramo zub na novu grupu
             state.toothToGroup.set(toothKey, groupId);
         });
@@ -232,8 +232,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Update
         DOM.typeSelectHidden.val(typeId).trigger('change');
         DOM.materialSelectHidden.val(materialId).trigger('change');
-        DOM.payloadInput.val(""); 
-        
+        DOM.payloadInput.val("");
+
         resetSelection();
         updateTeethVisuals();
         renderGroupsPreview();
@@ -298,51 +298,86 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function renderParameters(parameters) {
+        console.log('parameters', parameters);
         const container = DOM.parametersContainer;
         container.empty();
 
         if (!parameters.length) {
-            container.html(`<em> ${window.translations.no_parameters_combination} </em>`);
+            container.html(`<em>${window.translations.no_parameters_combination}</em>`);
             return;
         }
 
         parameters.forEach(p => {
+
+            const label = p.translated_name ?? p.name;
             let fieldHTML = '';
+
             switch (p.field_type) {
+
                 case 'string':
                 case 'text':
                     fieldHTML = `
-                        <div class="form-group mb-3">
-                            <label for="param_${p.id}">${p.name}</label>
-                            <input type="text" class="form-control" name="param[${p.id}]" id="param_${p.id}" placeholder="Enter value">
-                        </div>`;
+                    <div class="form-group mb-3">
+                        <label for="param_${p.id}">${label}</label>
+                        <input type="text"
+                               class="form-control"
+                               name="param[${p.id}]"
+                               id="param_${p.id}"
+                               placeholder="${window.translations.enter_value ?? 'Enter value'}">
+                    </div>`;
                     break;
+
                 case 'number':
                     fieldHTML = `
-                        <div class="form-group mb-3">
-                            <label for="param_${p.id}">${p.name}</label>
-                            <input type="number" class="form-control" name="param[${p.id}]" id="param_${p.id}">
-                        </div>`;
+                    <div class="form-group mb-3">
+                        <label for="param_${p.id}">${label}</label>
+                        <input type="number"
+                               class="form-control"
+                               name="param[${p.id}]"
+                               id="param_${p.id}">
+                    </div>`;
                     break;
+
                 case 'boolean':
                     fieldHTML = `
-                        <div class="form-check mb-3">
-                            <input type="checkbox" class="form-check-input" name="param[${p.id}]" id="param_${p.id}">
-                            <label class="form-check-label" for="param_${p.id}">${p.name}</label>
-                        </div>`;
+                    <div class="form-check mb-3">
+                        <input type="checkbox"
+                               class="form-check-input"
+                               name="param[${p.id}]"
+                               id="param_${p.id}">
+                        <label class="form-check-label" for="param_${p.id}">
+                            ${label}
+                        </label>
+                    </div>`;
                     break;
+
                 case 'select':
-                    const options = p.options ? JSON.parse(p.options).map(o => `<option value="${o}">${o}</option>`).join('') : '';
+
+                    const options = p.translated_options
+                        ? p.translated_options
+                            .map(o => `<option value="${o.value}">${o.label}</option>`)
+                            .join('')
+                        : (p.options
+                            ? JSON.parse(p.options)
+                                .map(o => `<option value="${o}">${o}</option>`)
+                                .join('')
+                            : '');
+
                     fieldHTML = `
-                        <div class="form-group mb-3">
-                            <label for="param_${p.id}">${p.name}</label>
-                            <select class="form-control" name="param[${p.id}]" id="param_${p.id}">
-                                <option value="">${window.translations.select}</option>
-                                ${options}
-                            </select>
-                        </div>`;
+                    <div class="form-group mb-3">
+                        <label for="param_${p.id}">${label}</label>
+                        <select class="form-control"
+                                name="param[${p.id}]"
+                                id="param_${p.id}">
+                            <option value="">
+                                ${window.translations.select}
+                            </option>
+                            ${options}
+                        </select>
+                    </div>`;
                     break;
             }
+
             container.append(fieldHTML);
         });
     }

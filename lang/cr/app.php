@@ -75,4 +75,42 @@ return [
     'edit_teeth' => 'Izmijeni',
     'no_groups' => 'Nema grupa još.',
     'select_at_least_one_tooth' => 'Odaberite barem jedan zub',
+
+
+
+    'Please Select' => 'Molimo odaberite',
+    'enter_value' => 'Unesite podatke',
+    'Custom Abutment' => 'Individualni abutment',
+    'Color' => 'Boja',
+    'Implant Manufacturer' => 'Proizvođač implantata',
+    'Tooth Shape Selection' => 'Odaberi oblik zuba',
+    'Thickness in mm' => 'Debljina u mm',
+    'Phase of Work' => 'Faza rada',
+    'Phase I' => 'Faza 1',
+    'Phase II' => 'Faza 2',
+    'Phase III' => 'Faza 3',
+    'Phase IV' => 'Faza 4',
+    'Class' => 'Klasa',
+    'Class I' => 'Klasa 1',
+    'Class II' => 'Klasa 2',
+    'Class III' => 'Klasa 3',
+    'Class IV' => 'Klasa 4',
+
+    'months' => [
+        1 => 'Siječanj',
+        2 => 'Veljača',
+        3 => 'Ožujak',
+        4 => 'Travanj',
+        5 => 'Svibanj',
+        6 => 'Lipanj',
+        7 => 'Srpanj',
+        8 => 'Kolovoz',
+        9 => 'Rujan',
+        10 => 'Listopad',
+        11 => 'Studeni',
+        12 => 'Prosinac',
+    ],
+
+    'search' => 'Pretraži',
+    'all' => 'Sve',
 ];

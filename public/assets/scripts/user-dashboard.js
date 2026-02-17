@@ -1,5 +1,4 @@
 $(function () {
-    // Extend FooTable with custom filtering
     FooTable.MyFiltering = FooTable.Filtering.extend({
 
         construct(instance) {
@@ -13,7 +12,13 @@ $(function () {
             this._super();
             const self = this;
 
-            // Wrapper for filter dropdown
+            if (self.$input) {
+                self.$input.attr(
+                    'placeholder',
+                    window.translations?.search || 'Search'
+                );
+            }
+
             const $wrapper = $('<div/>', {
                 class: 'form-group dm-select d-flex align-items-center my-xl-25 my-15 me-sm-20 me-0'
             }).append(
@@ -23,15 +28,12 @@ $(function () {
                 })
             ).prependTo(self.$form);
 
-            // Dropdown select
             self.$statusSelect = $('<select/>', { class: 'form-control ms-sm-10 ms-0' })
-                .append($('<option/>', { text: self.defaultStatus, value: '' }))
+                .append($('<option/>', { text: window.translations?.all || self.defaultStatus, value: '' }))
                 .on('change', { self: self }, self._onStatusChanged)
                 .appendTo($wrapper);
 
-            // Populate statuses from DB
             self.statuses.forEach(status => {
-
                 self.$statusSelect.append(
                     $('<option/>', { text: status.traslation, value: status.traslation })
                 );
@@ -43,7 +45,6 @@ $(function () {
             const selected = $(this).val();
 
             if (selected) {
-                // Filter rows based on `data-status` attribute
                 self.addFilter('status', selected, row => $(row).data('status') === selected);
             } else {
                 self.removeFilter('status');

@@ -90,7 +90,14 @@
                                             </td>
                                             <td>
                                                 <div class="userDatatable-content">
-                                                    {{ $work_order->created_at->translatedFormat('F d, Y @ H:i') }}
+                                                    @php
+                                                        $date = $work_order->created_at;
+                                                    @endphp
+
+                                                    {{ __('app.months.' . $date->month) }}
+                                                    {{ $date->day }},
+                                                    {{ $date->year }}
+                                                    @ {{ $date->format('H:i') }}
                                                 </div>
                                             </td>
                                             <td>
@@ -173,6 +180,10 @@
 @section('additionalPageJS')
     <script>
         window.statusesFromDB = @json($statusesForJs);
+        window.translations = {
+            search: "{{ __('app.search') }}",
+            all: "{{ __('app.all') }}",
+        };
     </script>
     <script src="{{ asset('assets/scripts/user-dashboard.js') }}"></script>
 @endsection

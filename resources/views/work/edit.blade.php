@@ -25,6 +25,7 @@
             edit_teeth: "{{ __('app.edit_teeth') }}",
             no_groups: "{{ __('app.no_groups') }}",
             select_at_least_one_tooth: "{{ __('app.select_at_least_one_tooth') }}",
+            enter_value: "{{ __('app.enter_value') }}",
         };
     </script>
 @endsection
