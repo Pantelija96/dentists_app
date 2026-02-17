@@ -407,27 +407,42 @@ document.addEventListener("DOMContentLoaded", () => {
         uploadBtn.closest('.upload-card').querySelector('input[type="file"]').click();
     });
 
-    // File selected
     DOM.uploadsContainer.addEventListener('change', e => {
         if (!e.target.classList.contains('upload-one')) return;
-        const file = e.target.files[0];
+
+        const files = Array.from(e.target.files);
         const list = e.target.closest('.upload-card').querySelector('.file-list');
-        list.innerHTML = '';
-        if (!file) return;
-        list.innerHTML = `
-            <li class="d-flex align-items-center justify-content-between">
-                <span>${file.name}</span>
-                <button type="button" class="btn remove-file">✕</button>
-            </li>
+        list.innerHTML = ''; // clear previous
+
+        files.forEach((file, i) => {
+            const li = document.createElement('li');
+            li.className = 'd-flex align-items-center justify-content-between';
+            li.innerHTML = `
+            <span>${file.name}</span>
+            <button type="button" class="btn remove-file">✕</button>
         `;
+            // store file index
+            li.dataset.index = i;
+            list.appendChild(li);
+        });
     });
 
-    // Remove file
+// Remove file
     DOM.uploadsContainer.addEventListener('click', e => {
         if (!e.target.classList.contains('remove-file')) return;
+
+        const li = e.target.closest('li');
         const card = e.target.closest('.upload-card');
-        card.querySelector('input[type="file"]').value = '';
-        card.querySelector('.file-list').innerHTML = '';
+        const input = card.querySelector('input[type="file"]');
+
+        // Remove file from input.files
+        const dt = new DataTransfer();
+        Array.from(input.files).forEach((file, i) => {
+            if (i != li.dataset.index) dt.items.add(file);
+        });
+        input.files = dt.files;
+
+        li.remove();
     });
 
     // Add new upload card

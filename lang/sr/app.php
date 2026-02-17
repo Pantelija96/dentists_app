@@ -66,7 +66,7 @@ return [
     'mark_all_as_read' => 'Označi sve kao pročitano',
     'please_fill_out' => 'Molimo popunite ovo polje',
     'click_to_upload' => 'Klikni za učitavanje',
-    'upload_file' => 'Učitaj fajl',
+    'upload_file' => 'Učitaj fajlove',
     'no_parameters_combination' => 'Nema parametara za ovu kombinaciju.',
     'please_select_work_and_material' => 'Molimo odaberite tip posla i materijal prvo.',
     'no_materials' => "Nema materijala za ovaj tip.",
