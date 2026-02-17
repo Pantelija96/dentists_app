@@ -32,6 +32,27 @@ class WorkTypeController extends Controller
             return !$rule || $rule->allowed;
         })->values();
 
+        $allowedParameters->transform(function($param) {
+
+            $translation = __('app.' . $param->name);
+            $param->translated_name = $translation !== 'app.' . $param->name
+                ? $translation
+                : $param->name;
+
+            if ($param->field_type === 'select' && $param->options) {
+                $options = json_decode($param->options, true);
+                $param->translated_options = collect($options)->map(function ($option) {
+                    $translated = __('app.' . $option);
+                    return [
+                        'value' => $option,
+                        'label' => $translated !== 'app.' . $option ? $translated : $option
+                    ];
+                })->values();
+            }
+
+            return $param;
+        });
+
         return response()->json($allowedParameters);
     }
 }
