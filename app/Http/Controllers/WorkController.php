@@ -73,6 +73,8 @@ class WorkController extends Controller
             'work_name' => 'required|string|max:255'
         ]);
 
+//        return dd($request->all());
+
         $draft = $request->action == 'draft';
 
         DB::beginTransaction();

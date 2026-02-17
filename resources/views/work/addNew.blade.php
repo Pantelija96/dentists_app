@@ -571,6 +571,7 @@
                                                 name="uploads[]"
                                                 class="upload-one d-none"
                                                 id="upload-1"
+                                                multiple
                                             >
                                         </div>
 
