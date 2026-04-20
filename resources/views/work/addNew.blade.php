@@ -402,7 +402,7 @@
                 <div class="work-fields">
                     @if(auth()->user()->role == 'admin')
                     <div class="form-group select-px-15">
-                        <label for="type_of_work">{{ __('app.create_for_user') }}:</label>
+                        <label for="type_of_work">{{ __('app.create_for_user') }}</label>
                         <select class="form-control px15 select-2" id="user_id" name="work_user">
                             <option value="0" disabled selected> {{ __('app.select') }} </option>
                             @foreach($users as $user)
