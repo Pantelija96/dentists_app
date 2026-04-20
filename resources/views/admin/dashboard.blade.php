@@ -86,7 +86,14 @@
                                             </td>
                                             <td>
                                                 <div class="userDatatable-content">
-                                                    {{ $work_order->created_at->translatedFormat('F d, Y @ H:i') }}
+                                                    @php
+                                                        $date = $work_order->created_at;
+                                                    @endphp
+
+                                                    {{ __('app.months.' . $date->month) }}
+                                                    {{ $date->day }},
+                                                    {{ $date->year }}
+                                                    @ {{ $date->format('H:i') }}
                                                 </div>
                                             </td>
                                             <td>
@@ -194,7 +201,14 @@
                                             </td>
                                             <td>
                                                 <div class="userDatatable-content">
-                                                    {{ $pending->created_at }}
+                                                    @php
+                                                        $date = $pending->created_at;
+                                                    @endphp
+
+                                                    {{ __('app.months.' . $date->month) }}
+                                                    {{ $date->day }},
+                                                    {{ $date->year }}
+                                                    @ {{ $date->format('H:i') }}
                                                 </div>
                                             </td>
                                             <td>
